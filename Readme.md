@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Александр Комаров](https://up.htmlacademy.ru/javascript/17/user/29334).
-* Наставник: `Неизвестно`.
+* Наставник: [Андрей Рыжаков](https://htmlacademy.ru/profile/id201015).
 
 ---
 
