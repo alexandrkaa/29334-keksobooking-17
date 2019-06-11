@@ -1,5 +1,9 @@
 'use strict';
 var mockDataQuantity = 8;
+var OFFER_TYPE = ['palace', 'flat', 'house', 'bungalo'];
+var MAPS_PINS_BLOCK = document.querySelector('.map__pins');
+var MAP_FADE_BLOCK = document.querySelector('.map');
+var PIN_ELEMENT_TEMPLATE = document.querySelector('#pin').content.querySelector('.map__pin');
 
 var getRandomValue = function (min, max) {
   return Math.floor(Math.random() * (max - min) + min);
@@ -7,9 +11,7 @@ var getRandomValue = function (min, max) {
 
 var generetaMock = function (dataQuantity) {
   var mock = [];
-  var OFFER_TYPE = ['palace', 'flat', 'house', 'bungalo'];
-  var mapPinsBlock = document.querySelector('.map__pins');
-  var mapPinsBlockWidth = mapPinsBlock.offsetWidth;
+  var mapPinsBlockWidth = MAPS_PINS_BLOCK.offsetWidth;
 
   for (var i = 0; i < parseInt(dataQuantity, 10); i++) {
     mock[i] = {
@@ -29,17 +31,15 @@ var generetaMock = function (dataQuantity) {
 };
 
 var switchMapFade = function () {
-  var mapFadeBlock = document.querySelector('.map');
-  if (mapFadeBlock.classList.contains('map--faded')) {
-    mapFadeBlock.classList.remove('map--faded');
+  if (MAP_FADE_BLOCK.classList.contains('map--faded')) {
+    MAP_FADE_BLOCK.classList.remove('map--faded');
   } else {
-    mapFadeBlock.classList.add('map--faded');
+    MAP_FADE_BLOCK.classList.add('map--faded');
   }
 };
 
 var createMapPinElement = function (pinData) {
-  var pinElementTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
-  var pinElement = pinElementTemplate.cloneNode(true);
+  var pinElement = PIN_ELEMENT_TEMPLATE.cloneNode(true);
   var pinElementImg = pinElement.querySelector('img');
   pinElementImg.src = pinData.author.avatar;
   pinElement.style.left = pinData.location.x + 'px';
