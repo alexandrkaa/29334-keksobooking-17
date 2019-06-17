@@ -88,7 +88,7 @@ var disactivatePage = function () {
   fadeMap();
   disableForm();
   disableFormFieldsets();
-}
+};
 
 var createMapPinElement = function (pinData) {
   var pinElement = PIN_ELEMENT_TEMPLATE.cloneNode(true);
@@ -146,7 +146,7 @@ var getMainPinCoordinates = function () {
 
 var setAddress = function (coordinates) {
   ADDRESS_FIELD.value = coordinates.left + ', ' + coordinates.top;
-}
+};
 
 disactivatePage();
 appendPins(generetaMock(mockDataQuantity));
