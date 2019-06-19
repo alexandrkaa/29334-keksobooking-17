@@ -21,6 +21,8 @@ var ADDRESS_TYPE = {
   'palace': 10000
 };
 var FORM_INPUTS = MAIN_FORM.querySelectorAll('input');
+var TIME_IN_FIELD = MAIN_FORM.querySelector('#timein');
+var TIME_OUT_FIELD = MAIN_FORM.querySelector('#timeout');
 
 var getRandomValue = function (min, max) {
   return Math.floor(Math.random() * (max - min) + min);
@@ -179,7 +181,16 @@ var onFormSubmit = function (evt) {
   }
 };
 
-// box-shadow: 0 0 2px 2px #ff6547;
+var onTimeInChange = function () {
+  TIME_OUT_FIELD.value = TIME_IN_FIELD.value;
+};
+
+var onTimeOutchange = function () {
+  TIME_IN_FIELD.value = TIME_OUT_FIELD.value;
+};
+
+TIME_IN_FIELD.addEventListener('change', onTimeInChange);
+TIME_OUT_FIELD.addEventListener('change', onTimeOutchange);
 MAIN_FORM.addEventListener('submit', onFormSubmit);
 TYPE_FIELD.addEventListener('change', onTypeChange);
 disactivatePage();
