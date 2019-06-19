@@ -12,6 +12,15 @@ var MAP_BOTTOM = 630;
 var FORM_FIELDSETS = document.querySelectorAll('form fieldset');
 var MAIN_FORM = document.querySelector('.ad-form');
 var ADDRESS_FIELD = document.querySelector('#address');
+var PRICE_FIELD = document.querySelector('#price');
+var TYPE_FIELD = document.querySelector('#type');
+var ADDRESS_TYPE = {
+  'bungalo': 0,
+  'flat': 1000,
+  'house': 5000,
+  'palace': 10000
+};
+var FORM_INPUTS = MAIN_FORM.querySelectorAll('input');
 
 var getRandomValue = function (min, max) {
   return Math.floor(Math.random() * (max - min) + min);
@@ -148,6 +157,31 @@ var setAddress = function (coordinates) {
   ADDRESS_FIELD.value = coordinates.left + ', ' + coordinates.top;
 };
 
+// set min price and placeholder
+var onTypeChange = function () {
+  var minPrice = ADDRESS_TYPE[TYPE_FIELD.querySelector('option:checked').value];
+  PRICE_FIELD.min = minPrice;
+  PRICE_FIELD.placeholder = minPrice;
+};
+
+var onFormSubmit = function (evt) {
+  var isFormValid = true;
+  for (var i = 0; i < FORM_INPUTS.length; i++) {
+    if (!FORM_INPUTS[i].validity.valid) {
+      isFormValid = false;
+      FORM_INPUTS[i].style = 'box-shadow: 0 0 2px 2px #ff6547;';
+    } else {
+      FORM_INPUTS[i].style = '';
+    }
+  }
+  if (!isFormValid) {
+    evt.preventDefault();
+  }
+};
+
+// box-shadow: 0 0 2px 2px #ff6547;
+MAIN_FORM.addEventListener('submit', onFormSubmit);
+TYPE_FIELD.addEventListener('change', onTypeChange);
 disactivatePage();
 appendPins(generetaMock(mockDataQuantity));
 setAddress(getMainPinCoordinates());
