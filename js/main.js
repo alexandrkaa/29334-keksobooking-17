@@ -93,6 +93,7 @@ var activatePage = function () {
   unFadeMap();
   enableForm();
   enebaleFormFieldsets();
+  return true;
 };
 
 var disactivatePage = function () {
@@ -130,10 +131,10 @@ var appendPins = function (pinsData) {
   MAP_PINS_BLOCK.appendChild(pinsFragment);
 };
 
-var onMainPinClick = function () {
-  activatePage();
-  setAddress(getMainPinCoordinates());
-};
+// var onMainPinClick = function () {
+//   activatePage();
+//   setAddress(getMainPinCoordinates());
+// };
 
 var getMainPinSize = function () {
   var mainPinSize = {};
@@ -147,11 +148,12 @@ var getMainPinSize = function () {
   return mainPinSize;
 };
 
+var MAIN_PIN_SIZE = getMainPinSize();
+
 var getMainPinCoordinates = function () {
   var coordinates = {};
-  var mainPinSize = getMainPinSize();
-  coordinates.left = MAIN_PIN.offsetLeft + (mainPinSize.width / 2);
-  coordinates.top = MAIN_PIN.offsetTop + (mainPinSize.height / 2);
+  coordinates.left = MAIN_PIN.offsetLeft + (MAIN_PIN_SIZE.width / 2);
+  coordinates.top = MAIN_PIN.offsetTop + (MAIN_PIN_SIZE.height / 2);
   return coordinates;
 };
 
@@ -196,4 +198,52 @@ TYPE_FIELD.addEventListener('change', onTypeChange);
 disactivatePage();
 appendPins(generetaMock(mockDataQuantity));
 setAddress(getMainPinCoordinates());
-MAIN_PIN.addEventListener('click', onMainPinClick);
+// MAIN_PIN.addEventListener('click', onMainPinClick);
+MAIN_PIN.addEventListener('mousedown', function (evt) {
+  evt.preventDefault();
+
+  var isPageActive = false;
+
+  var startCoordinates = {
+    x: evt.clientX,
+    y: evt.clientY
+  };
+
+  var onMoveMainPin = function (moveEvt) {
+    moveEvt.preventDefault();
+
+    if (!isPageActive) {
+      isPageActive = activatePage();
+    }
+    setAddress(getMainPinCoordinates());
+
+    var shift = {
+      x: startCoordinates.x - moveEvt.clientX,
+      y: startCoordinates.y - moveEvt.clientY
+    };
+
+    startCoordinates = {
+      x: moveEvt.clientX,
+      y: moveEvt.clientY
+    };
+
+    MAIN_PIN.style.top = (MAIN_PIN.offsetTop - shift.y) + 'px';
+    MAIN_PIN.style.left = (MAIN_PIN.offsetLeft - shift.x) + 'px';
+  };
+
+  var onMouseUpOnMainPin = function (upEvt) {
+    upEvt.preventDefault();
+
+    if (!isPageActive) {
+      isPageActive = activatePage();
+    }
+
+    setAddress(getMainPinCoordinates());
+
+    document.removeEventListener('mousemove', onMoveMainPin);
+    document.removeEventListener('mouseup', onMouseUpOnMainPin);
+  };
+
+  document.addEventListener('mousemove', onMoveMainPin);
+  document.addEventListener('mouseup', onMouseUpOnMainPin);
+});
