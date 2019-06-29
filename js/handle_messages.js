@@ -5,7 +5,7 @@
   var ERROR_TEMPLATE = document.querySelector('#error').content.querySelector('.error');
   var MAIN_BLOCK = document.querySelector('main');
   // var ERROR_BUTTON = document.querySelector('error__button');
-  var onSuccessMessage = function (message) {
+  var onSuccessMessage = function () {
     var successMessageElement = SUCCESS_TEMPLATE.cloneNode(true);
     MAIN_BLOCK.appendChild(successMessageElement);
   };
