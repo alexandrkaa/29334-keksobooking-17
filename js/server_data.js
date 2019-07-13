@@ -2,6 +2,9 @@
 
 (function () {
 
+  // сделать и get и post
+  var SERVER_URL = 'https://js.dump.academy/keksobooking/data';
+
   var loadServerData = function (url, onSuccess, onError) {
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
@@ -32,7 +35,7 @@
   };
 
   var getServerPinsData = function (onSuccess, onError) {
-    var SERVER_URL = 'https://js.dump.academy/keksobooking/data';
+    // тут передавать параметры для отправки/получения
     loadServerData(SERVER_URL, onSuccess, onError || window.handleMessagesModule.onErrorMessage);
   };
 

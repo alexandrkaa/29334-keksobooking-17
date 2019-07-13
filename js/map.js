@@ -4,6 +4,7 @@
   var MAP_BLOCK = document.querySelector('.map');
   var MAP_PINS_BLOCK = MAP_BLOCK.querySelector('.map__pins');
   var MAIN_PIN = MAP_PINS_BLOCK.querySelector('.map__pin--main');
+  var MAIN_PIN_AFTER_OFFSET = 6; // defined in css
 
   var isMapFaded = function () {
     return MAP_BLOCK.classList.contains('map--faded');
@@ -16,7 +17,7 @@
       mainPinSize.height = MAIN_PIN.offsetHeight;
     } else {
       mainPinSize.width = MAIN_PIN.offsetWidth;
-      mainPinSize.height = MAIN_PIN.offsetHeight + parseInt(window.getComputedStyle(MAIN_PIN, '::after').height, 10);
+      mainPinSize.height = MAIN_PIN.offsetHeight + parseInt(window.getComputedStyle(MAIN_PIN, '::after').height, 10) - MAIN_PIN_AFTER_OFFSET;
     }
     return mainPinSize;
   };
