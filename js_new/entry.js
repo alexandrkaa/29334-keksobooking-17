@@ -17,8 +17,8 @@
     window.mainPinModule.init(function () {
       window.formModule.enableForm();
       window.mapModule.enableMap();
-      // window.filters.enable();
-      window.mapModule.insertElems(window.dataModule.getData(), window.advModule.createPin);
+      window.filtersModule.enableFilters(false);
+      window.mapModule.insertElems(window.dataModule.getData().slice(0, 5), window.advModule.createPin);
     });
   });
 })();

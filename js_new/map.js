@@ -13,6 +13,7 @@
   };
   var insertElems = function (elemData, renderElem) {
     var node = null;
+    // дописать throw error если нет данных
     // вставляем pin`ы
     if (Array.isArray(elemData)) {
       var fragment = document.createDocumentFragment();
@@ -23,16 +24,21 @@
       });
       mapBlock.appendChild(fragment);
     } else { // вставляем карточку объявления
-      node = renderElem(elemData);
-      mapBlock.lastElementChild.insertAdjacentElement('beforeBegin', node);
-      mapElems.push(node);
-      var index = mapElems.indexOf(node);
+      var index = mapElems.findIndex(function (elem) {
+        if (elem.classList.contains('popup')) {
+          return true;
+        }
+        return false;
+      });
       if (index !== -1) {
         mapElems.splice(index, 1);
       }
-      // предусмотреть, что когда открываем новую карточку,
-      // старая из массива mapElems удаляется и добавляется новая
+      node = renderElem(elemData);
+      mapBlock.lastElementChild.insertAdjacentElement('beforeBegin', node);
+      mapElems.push(node);
     }
+    // window.mapElems = mapElems;
+    // console.log(mapElems);
   };
 
   var deleteElems = function () {

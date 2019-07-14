@@ -7,6 +7,7 @@
   var mainPinMouseUpHandler = null;
   var MAIN_PIN_TAIL_OFFSET = 6; // defined in css
   var MAIN_PIN_TAIL_SIZE = parseInt(window.getComputedStyle(mainPin, '::after').height, 10) - MAIN_PIN_TAIL_OFFSET;
+  var addressChangeEvent = new Event('onAddressChange');
   var mainPinSize = {
     width: mainPin.offsetWidth,
     height: mainPin.offsetheight + MAIN_PIN_TAIL_SIZE
@@ -15,12 +16,6 @@
     this.x = x;
     this.y = y;
   };
-
-  // var getMainPinCoordinates = function () {
-  //   return new Coordinates(mainPin.offsetLeft + (mainPinSize.width / 2), mainPin.offsetTop + mainPin.height);
-  // };
-
-  var addressChangeEvent = new Event('onAddressChange');
 
   var enablePage = function (action) {
     return function () {
@@ -53,7 +48,6 @@
     var onMouseUpOnMainPin = function (upEvt) {
       upEvt.preventDefault();
       mainPin.dispatchEvent(addressChangeEvent);
-      // window.formModule.setAddress(window.mapModule.getMainPinCoordinates());
 
       document.removeEventListener('mousemove', onMainPinMove);
       document.removeEventListener('mouseup', onMouseUpOnMainPin);
