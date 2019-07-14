@@ -32,10 +32,10 @@
       insertCardFunc(data, createCard);
 
       if (currentPin) {
-        currentPin.classLisst.remove('pin--active');
+        currentPin.classList.remove('pin--active');
       }
       currentPin = template;
-      currentPin.classLisst.add('pin--active');
+      currentPin.classList.add('pin--active');
 
     });
     return template;
@@ -52,6 +52,8 @@
     var photoElem = document.createElement('img');
     photoElem.src = photo;
     photoElem.alt = 'Фотография жилья';
+    photoElem.width = 40;
+    photoElem.height = 45;
     return photoElem;
   };
 
@@ -86,6 +88,7 @@
       photosFragment.appendChild(createCardPhoto(photo));
     });
     photosBlock.appendChild(photosFragment);
+    currentCard = template;
     return template;
   };
 

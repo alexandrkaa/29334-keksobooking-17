@@ -52,7 +52,7 @@
     };
     var onMouseUpOnMainPin = function (upEvt) {
       upEvt.preventDefault();
-
+      mainPin.dispatchEvent(addressChangeEvent);
       // window.formModule.setAddress(window.mapModule.getMainPinCoordinates());
 
       document.removeEventListener('mousemove', onMainPinMove);

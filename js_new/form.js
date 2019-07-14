@@ -16,8 +16,8 @@
   };
   var mainPin = document.querySelector('.map__pin--main');
   var onAddressChange = function (evt) {
-    console.log(evt.target.offsetTop, evt.target.offsetLeft);
-    // addressField.value = evt.
+    // console.log(evt.target.offsetTop, evt.target.offsetLeft);
+    addressField.value = evt.target.offsetTop + ', ' + evt.target.offsetLeft;
   };
 
   var onTimeInChange = function () {
