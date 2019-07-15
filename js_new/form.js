@@ -2,15 +2,21 @@
 
 (function () {
   var form = document.querySelector('.ad-form');
+  var mainPin = document.querySelector('.map__pin--main');
   var formFields = Array.from(form.querySelectorAll('input, select'));
   var priceField = form.querySelector('#price');
   var typeField = form.querySelector('#type');
   var timeInField = form.querySelector('#timein');
-  var timeOutfield = form.querySelector('#timeout');
+  var timeOutField = form.querySelector('#timeout');
   var addressField = form.querySelector('#address');
   var roomsQuantityField = form.querySelector('#room_number');
   var capacityField = form.querySelector('#capacity');
+  var avatarField = form.querySelector('#avatar');
+  var housingImageField = form.querySelector('#images');
   var formFieldsets = Array.from(form.querySelectorAll('fieldset'));
+  var avatarPreview = form.querySelector('.ad-form-header__preview img');
+  var housingImagePreviewBlock = form.querySelector('.ad-form__photo');
+  var housingImagePreview = null;
   var HOUSING_PRICES = {
     'bungalo': 0,
     'flat': 1000,
@@ -24,18 +30,32 @@
     '3': ['3', '2', '1'],
     '100': ['0'],
   };
-  var mainPin = document.querySelector('.map__pin--main');
+
+  var createHousingPreview = function () {
+    if (housingImagePreview === null) {
+      housingImagePreview = document.createElement('img');
+      housingImagePreview.alt = 'Фотографии жилья';
+      housingImagePreview.width = 70;
+      housingImagePreview.height = 70;
+      housingImagePreviewBlock.appendChild(housingImagePreview);
+    }
+    return housingImagePreview;
+  };
+
+  var deleteHousingPreview = function () {
+    housingImagePreview.remove();
+  };
+
   var onAddressChange = function (evt) {
-    // console.log(evt.target.offsetTop, evt.target.offsetLeft);
     addressField.value = evt.target.offsetTop + ', ' + evt.target.offsetLeft;
   };
 
   var onTimeInChange = function () {
-    timeOutfield.value = timeInField.value;
+    timeOutField.value = timeInField.value;
   };
 
   var onTimeOutchange = function () {
-    timeInField.value = timeOutfield.value;
+    timeInField.value = timeOutField.value;
   };
 
   var onTypeChange = function () {
@@ -50,12 +70,16 @@
     });
     form.classList.add('ad-form--disabled');
     timeInField.removeEventListener('change', onTimeInChange);
-    timeOutfield.removeEventListener('change', onTimeOutchange);
+    timeOutField.removeEventListener('change', onTimeOutchange);
     typeField.removeEventListener('change', onTypeChange);
     mainPin.removeEventListener('onAddressChange', onAddressChange);
     form.removeEventListener('submit', onFormSubmit);
     roomsQuantityField.removeEventListener('change', clearRoomsForGuestsValidity);
     capacityField.removeEventListener('change', clearRoomsForGuestsValidity);
+    avatarField.removeEventListener('change', window.previewLoaderModule.onFileChoose);
+    if (housingImagePreview !== null) {
+      deleteHousingPreview();
+    }
   };
 
   var enableForm = function () {
@@ -64,12 +88,14 @@
     });
     form.classList.remove('ad-form--disabled');
     timeInField.addEventListener('change', onTimeInChange);
-    timeOutfield.addEventListener('change', onTimeOutchange);
+    timeOutField.addEventListener('change', onTimeOutchange);
     typeField.addEventListener('change', onTypeChange);
     mainPin.addEventListener('onAddressChange', onAddressChange);
     form.addEventListener('submit', onFormSubmit);
     roomsQuantityField.addEventListener('change', clearRoomsForGuestsValidity);
     capacityField.addEventListener('change', clearRoomsForGuestsValidity);
+    avatarField.addEventListener('change', window.previewLoaderModule.onFileChoose.bind(null, avatarPreview, avatarField));
+    housingImageField.addEventListener('change', window.previewLoaderModule.onFileChoose.bind(null, createHousingPreview, housingImageField));
   };
 
   var clearRoomsForGuestsValidity = function () {
@@ -78,7 +104,6 @@
   };
 
   var validateRoomsForGuests = function () {
-    // debugger;
     var valid = roomsForGuestsMap[roomsQuantityField.value].includes(capacityField.value);
     return valid;
   };
@@ -97,12 +122,7 @@
       roomsQuantityField.setCustomValidity('Количество гостей не подходит под комнаты');
       capacityField.setCustomValidity('Количество гостей не подходит под комнаты');
     }
-    //  else {
-    //   roomsQuantityField.setCustomValidity('');
-    //   capacityField.setCustomValidity('');
-    // }
     formFields.forEach(function (field) {
-      // console.log(field.validity.valid);
       if (!field.validity.valid) {
         isFormValid = false;
       }
@@ -115,7 +135,16 @@
     evt.preventDefault();
     var isFormValidated = validateForm();
     if (isFormValidated) {
-
+      var formData = new FormData(form);
+      var ajaxSetting = {
+        method: 'POST',
+        url: 'https://js.dump.academy/keksobooking',
+        data: formData,
+        async: true,
+        success: window.handleMessagesModule.showSuccessMessage,
+        sendError: window.handleMessagesModule.showErrorMessage,
+      };
+      window.serverModule.ajax(ajaxSetting);
     }
   };
 

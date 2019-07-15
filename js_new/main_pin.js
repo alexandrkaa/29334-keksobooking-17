@@ -8,6 +8,10 @@
   var MAIN_PIN_TAIL_OFFSET = 6; // defined in css
   var MAIN_PIN_TAIL_SIZE = parseInt(window.getComputedStyle(mainPin, '::after').height, 10) - MAIN_PIN_TAIL_OFFSET;
   var addressChangeEvent = new Event('onAddressChange');
+  var mainPinDefaultPosition = {
+    LEFT: '570px',
+    TOP: '375px'
+  };
   var mainPinSize = {
     width: mainPin.offsetWidth,
     height: mainPin.offsetheight + MAIN_PIN_TAIL_SIZE
@@ -56,6 +60,12 @@
     document.addEventListener('mouseup', onMouseUpOnMainPin);
   };
 
+  var resetMainPin = function () {
+    mainPin.style.left = mainPinDefaultPosition.LEFT;
+    mainPin.style.top = mainPinDefaultPosition.TOP;
+    mainPin.dispatchEvent(addressChangeEvent);
+  };
+
   var init = function (action) {
     mainPinMouseUpHandler = enablePage(action);
     mainPin.addEventListener('mouseup', mainPinMouseUpHandler);
@@ -63,7 +73,8 @@
   };
 
   window.mainPinModule = {
-    init: init
+    init: init,
+    resetMainPin: resetMainPin
   };
 
 })();

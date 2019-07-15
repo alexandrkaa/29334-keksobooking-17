@@ -17,7 +17,8 @@
       sendError: null, // функция обработки ошибок
       type: '', // тип получаемых данных
       readyStateChange: null, // функция обработки ответа сервера
-      headers: {} // заголовки для сервера
+      headers: {}, // заголовки для сервера
+      timeout: 3000
     };
     // сформируем опции запроса на основе дефолтных настроек и переданных опций
     var options = Object.assign(ajaxSettings, settings);
@@ -49,6 +50,7 @@
         options.sendError('Ошибка соединения!');
       }
     };
+    xhr.timeout = options.timeout;
     xhr.send(options.data);
   }
   window.serverModule = {
