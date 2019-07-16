@@ -60,21 +60,14 @@
 
   var closeCard = function () {
     if (currentCard) {
-      document.removeEventListener('keydown', onEscPress);
+      document.removeEventListener('keydown', window.utilsModule.onEscPress);
       currentCard.remove();
       currentCard = null;
     }
   };
 
-  var onEscPress = function (evt) {
-    if (evt.keyCode === ESC_KEYCODE) {
-      evt.preventDefault();
-      closeCard();
-    }
-  };
-
   var createCard = function (data) {
-    document.addEventListener('keydown', onEscPress);
+    document.addEventListener('keydown', window.utilsModule.onEscPress.bind(this, closeCard));
     var offer = data.offer;
     var template = cardTemplate.cloneNode(true);
     var cardAvatar = template.querySelector('.popup__avatar');
