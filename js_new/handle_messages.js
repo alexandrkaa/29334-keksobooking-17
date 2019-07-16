@@ -31,8 +31,8 @@
         timeout: 3000,
         success: function (response) {
           window.dataModule.setData(response);
-          window.mapModule.insertElems(window.dataModule.getData().slice(0, 5), window.advModule.createPin);
-          // window.entryModule.start();
+          // window.mapModule.insertElems(window.dataModule.getData().slice(0, 5), window.advModule.createPin);
+          window.entryModule.start();
         },
         sendError: window.handleMessagesModule.showErrorMessage
       });
