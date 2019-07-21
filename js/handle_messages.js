@@ -13,6 +13,7 @@
 
   var showSuccessMessage = function () {
     successMessageElement = successTemplate.cloneNode(true);
+    // eslint-disable-next-line no-invalid-this
     document.addEventListener('keydown', window.utils.onEscPress.bind(this, closeSuccessMessage));
     successMessageElement.addEventListener('click', function () {
       closeSuccessMessage();

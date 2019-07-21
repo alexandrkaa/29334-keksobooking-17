@@ -74,6 +74,7 @@
   };
 
   var createCard = function (data) {
+    // eslint-disable-next-line no-invalid-this
     document.addEventListener('keydown', window.utils.onEscPress.bind(this, closeCard));
     var offer = data.offer;
     var template = cardTemplate.cloneNode(true);

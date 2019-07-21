@@ -142,7 +142,7 @@
     }
   };
 
-  var onFormReset = function (evt) {
+  var onFormReset = function () {
     window.entry.disablePage();
     window.entry.start();
   };
