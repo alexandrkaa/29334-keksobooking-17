@@ -26,7 +26,7 @@
     }
   };
 
-  window.previewLoaderModule = {
+  window.previewLoader = {
     onFileChoose: onFileChoose
   };
 })();

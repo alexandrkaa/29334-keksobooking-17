@@ -1,10 +1,8 @@
 'use strict';
 
 (function () {
-  // ajax запрос выполнен
-  var AJAX_COMPLETED = 4;
-  // сервер ответил OK
-  var HTTP_OK = 200;
+  var AJAX_COMPLETED = 4; // ajax запрос выполнен
+  var HTTP_OK = 200; // сервер ответил OK
 
   function ajax(settings) {
     // принимает в кач. параметра настройки

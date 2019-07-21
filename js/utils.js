@@ -6,14 +6,13 @@
   var onEscPress = function (action, evt) {
     if (evt.keyCode === ESC_KEYCODE) {
       evt.preventDefault();
-      // closeCard();
       if (action !== undefined && typeof action === 'function') {
         action();
       }
     }
   };
 
-  window.utilsModule = {
+  window.utils = {
     onEscPress: onEscPress
   };
 

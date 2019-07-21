@@ -1,51 +1,60 @@
 'use strict';
 
 (function () {
-  var MAP_BLOCK = document.querySelector('.map');
-  var MAP_PINS_BLOCK = MAP_BLOCK.querySelector('.map__pins');
-  var MAIN_PIN = MAP_PINS_BLOCK.querySelector('.map__pin--main');
-  var MAIN_PIN_AFTER_OFFSET = 6; // defined in css
+  var mapBlock = document.querySelector('.map');
+  var mapElems = [];
 
-  var isMapFaded = function () {
-    return MAP_BLOCK.classList.contains('map--faded');
+  var disableMap = function () {
+    mapBlock.classList.add('map--faded');
   };
 
-  var getMainPinSize = function () {
-    var mainPinSize = {};
-    if (isMapFaded()) {
-      mainPinSize.width = MAIN_PIN.offsetWidth;
-      mainPinSize.height = MAIN_PIN.offsetHeight;
-    } else {
-      mainPinSize.width = MAIN_PIN.offsetWidth;
-      mainPinSize.height = MAIN_PIN.offsetHeight + parseInt(window.getComputedStyle(MAIN_PIN, '::after').height, 10) - MAIN_PIN_AFTER_OFFSET;
-    }
-    return mainPinSize;
+  var enableMap = function () {
+    mapBlock.classList.remove('map--faded');
   };
-
-  var MAIN_PIN_SIZE = getMainPinSize();
-
-  var getMainPinCoordinates = function () {
-    var coordinates = {};
-    coordinates.left = MAIN_PIN.offsetLeft + (MAIN_PIN_SIZE.width / 2);
-    coordinates.top = MAIN_PIN.offsetTop + (MAIN_PIN_SIZE.height / 2);
-    return coordinates;
-  };
-
-  var fadeMap = function () {
-    if (!MAP_BLOCK.classList.contains('map--faded')) {
-      MAP_BLOCK.classList.add('map--faded');
+  var insertElems = function (elemData, renderElem) {
+    var node = null;
+    if (Array.isArray(elemData)) {
+      var fragment = document.createDocumentFragment();
+      elemData.forEach(function (item) {
+        node = renderElem(item);
+        fragment.appendChild(node);
+        mapElems.push(node);
+      });
+      mapBlock.appendChild(fragment);
+    } else { // вставляем карточку объявления
+      var index = mapElems.findIndex(function (elem) {
+        return elem.classList.contains('popup');
+      });
+      if (index !== -1) {
+        mapElems.splice(index, 1);
+      }
+      node = renderElem(elemData);
+      mapBlock.lastElementChild.insertAdjacentElement('beforeBegin', node);
+      mapElems.push(node);
     }
   };
 
-  var unFadeMap = function () {
-    if (MAP_BLOCK.classList.contains('map--faded')) {
-      MAP_BLOCK.classList.remove('map--faded');
-    }
+  var deleteElems = function () {
+    mapElems.forEach(function (elem) {
+      elem.remove();
+    });
+    mapElems = [];
   };
 
-  window.mapModule = {
-    getMainPinCoordinates: getMainPinCoordinates,
-    fadeMap: fadeMap,
-    unFadeMap: unFadeMap
+  document.addEventListener('closeCard', function (evt) {
+    var index = mapElems.findIndex(function () {
+      return evt.target.classList.contains('popup');
+    });
+    if (index !== -1) {
+      mapElems.splice(index, 1);
+    }
+    evt.target.remove();
+  });
+
+  window.map = {
+    insertElems: insertElems,
+    deleteElems: deleteElems,
+    disableMap: disableMap,
+    enableMap: enableMap
   };
 })();

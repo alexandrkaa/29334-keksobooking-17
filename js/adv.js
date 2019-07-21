@@ -5,6 +5,9 @@
   var PIN_HEIGHT = 70; // defined in css
   var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
   var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
+  var closeCardEvent = new Event('closeCard', {
+    'bubbles': true
+  });
   var HOUSING_TYPES = {
     'bungalo': 'Бунгало',
     'flat': 'Квартира',
@@ -64,14 +67,14 @@
 
   var closeCard = function () {
     if (currentCard) {
-      document.removeEventListener('keydown', window.utilsModule.onEscPress);
-      currentCard.remove();
+      document.removeEventListener('keydown', window.utils.onEscPress);
+      currentCard.dispatchEvent(closeCardEvent);
       currentCard = null;
     }
   };
 
   var createCard = function (data) {
-    document.addEventListener('keydown', window.utilsModule.onEscPress.bind(this, closeCard));
+    document.addEventListener('keydown', window.utils.onEscPress.bind(this, closeCard));
     var offer = data.offer;
     var template = cardTemplate.cloneNode(true);
     var cardAvatar = template.querySelector('.popup__avatar');
@@ -88,13 +91,17 @@
     cardCapacity.textContent = offer.rooms + ' комнаты для ' + offer.guests + ' гостей';
     var cardTime = template.querySelector('.popup__text--time');
     cardTime.textContent = 'Заезд после ' + offer.checkin + ', выезд до ' + offer.checkout;
-    var featuresFragment = document.createDocumentFragment();
     var featuresBlock = template.querySelector('.popup__features');
-    featuresBlock.innerHTML = '';
-    offer.features.forEach(function (feature) {
-      featuresFragment.appendChild(createCardFeature(feature));
-    });
-    featuresBlock.appendChild(featuresFragment);
+    if (offer.features.length > 0) {
+      var featuresFragment = document.createDocumentFragment();
+      offer.features.forEach(function (feature) {
+        featuresFragment.appendChild(createCardFeature(feature));
+      });
+      featuresBlock.innerHTML = '';
+      featuresBlock.appendChild(featuresFragment);
+    } else {
+      featuresBlock.remove();
+    }
     var cardDescription = template.querySelector('.popup__description');
     cardDescription.textContent = offer.description;
     var photosBlock = template.querySelector('.popup__photos');

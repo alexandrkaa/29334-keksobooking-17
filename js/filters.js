@@ -9,11 +9,11 @@
     });
   };
 
-  var enableFilters = function () {
+  var enable = function () {
     changeFiltersDisableState(false);
   };
 
-  var disableFilters = function () {
+  var disable = function () {
     changeFiltersDisableState(true);
   };
 
@@ -51,10 +51,7 @@
         }
       }
     } else {
-      // filter features
-      // console.log(offer.features.includes(housingFilterData.features[0]));
       for (var i = 0; i < housingFilterData.features.length; i++) {
-        // console.log(offer.features.includes(housingFilterData.features[i]));
         if (!offer.features.includes(housingFilterData.features[i])) {
           filterResult = false;
           break;
@@ -98,20 +95,9 @@
     }
   };
 
-  // var getFilterType = function (name) {
-  //   var filterType = null;
-  //   if ((name.indexOf('housing') + 1) > 0) {
-  //     filterType = name.split('-')[1];
-  //   } else {
-  //     filterType = name;
-  //   }
-  //   return filterType;
-  // };
-
   var onChangeFilter = function (evt) {
-    var pins = window.dataModule.getData();
+    var pins = window.data.get();
     updateHousingFilterData(evt);
-    // console.log(housingFilterData);
     var filterKeys = Object.keys(housingFilterData);
     var filtredPins = pins.filter(function (pin) {
       var filtredStatus = true;
@@ -122,21 +108,16 @@
         }
       }
       return filtredStatus;
-      // return housingFilter(pin.offer, 'type') && housingFilter(pin.offer, 'price') && housingFilter(pin.offer, 'rooms') && housingFilter(pin.offer, 'guests');
     }).slice(0, 5);
-    window.mapModule.deleteElems();
-    // filtredPins.forEach(function (pin) {
-    //   console.log(pin.offer.features);
-    // });
-    window.mapModule.insertElems(filtredPins, window.adv.createPin);
-    // console.log(filtredPins);
+    window.map.deleteElems();
+    window.map.insertElems(filtredPins, window.adv.createPin);
   };
 
   filterForm.addEventListener('change', onChangeFilter);
 
-  window.filtersModule = {
-    enableFilters: enableFilters,
-    disableFilters: disableFilters,
+  window.filters = {
+    enable: enable,
+    disable: disable,
     housingFilterData: housingFilterData
   };
 

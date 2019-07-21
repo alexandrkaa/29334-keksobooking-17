@@ -1,97 +1,154 @@
 'use strict';
 
 (function () {
-  var MAIN_FORM = document.querySelector('.ad-form');
-  var PRICE_FIELD = document.querySelector('#price');
-  var TYPE_FIELD = document.querySelector('#type');
-  var ADDRESS_TYPE = {
+  var form = document.querySelector('.ad-form');
+  var mainPin = document.querySelector('.map__pin--main');
+  var formFields = Array.from(form.querySelectorAll('input, select'));
+  var formFieldsets = Array.from(form.querySelectorAll('fieldset'));
+  var avatarPreview = form.querySelector('.ad-form-header__preview img');
+  var housingImagePreviewBlock = form.querySelector('.ad-form__photo');
+  var housingImagePreview = null;
+  var HOUSING_PRICES = {
     'bungalo': 0,
     'flat': 1000,
     'house': 5000,
     'palace': 10000
   };
-  var FORM_INPUTS = MAIN_FORM.querySelectorAll('input');
-  var TIME_IN_FIELD = MAIN_FORM.querySelector('#timein');
-  var TIME_OUT_FIELD = MAIN_FORM.querySelector('#timeout');
-  var ADDRESS_FIELD = document.querySelector('#address');
-  var FORM_FIELDSETS = document.querySelectorAll('form fieldset');
+  var DEFAULT_AVATAR_IMG = 'img/muffin-grey.svg';
+  var roomsForGuestsMap = {
+    '1': ['1'],
+    '2': ['2', '1'],
+    '3': ['3', '2', '1'],
+    '100': ['0'],
+  };
 
-  var makeFormTransparent = function () {
-    if (MAIN_FORM.classList.contains('ad-form--disabled')) {
-      MAIN_FORM.classList.remove('ad-form--disabled');
+  var createHousingPreview = function () {
+    if (housingImagePreview === null) {
+      housingImagePreview = document.createElement('img');
+      housingImagePreview.alt = 'Фотографии жилья';
+      housingImagePreview.width = 70;
+      housingImagePreview.height = 70;
+      housingImagePreviewBlock.appendChild(housingImagePreview);
     }
+    return housingImagePreview;
   };
 
-  var makeFormUntransparent = function () {
-    if (MAIN_FORM.classList.contains('ad-form--disabled')) {
-      MAIN_FORM.classList.add('ad-form--disabled');
-    }
+  var deleteHousingPreview = function () {
+    housingImagePreview.remove();
   };
 
-  var disableFormFieldsets = function () {
-    for (var i = 0; i < FORM_FIELDSETS.length; i++) {
-      FORM_FIELDSETS[i].disabled = true;
-    }
-  };
-
-  var enebaleFormFieldsets = function () {
-    for (var i = 0; i < FORM_FIELDSETS.length; i++) {
-      FORM_FIELDSETS[i].disabled = false;
-    }
-  };
-
-  var disableForm = function () {
-    makeFormTransparent();
-    disableFormFieldsets();
-  };
-
-  var enableForm = function () {
-    makeFormUntransparent();
-    enebaleFormFieldsets();
-  };
-
-  // set min price and placeholder
-  var onTypeChange = function () {
-    var minPrice = ADDRESS_TYPE[TYPE_FIELD.querySelector('option:checked').value];
-    PRICE_FIELD.min = minPrice;
-    PRICE_FIELD.placeholder = minPrice;
-  };
-
-  var onFormSubmit = function (evt) {
-    var isFormValid = true;
-    for (var i = 0; i < FORM_INPUTS.length; i++) {
-      if (!FORM_INPUTS[i].validity.valid) {
-        isFormValid = false;
-        FORM_INPUTS[i].style = 'box-shadow: 0 0 2px 2px #ff6547;';
-      } else {
-        FORM_INPUTS[i].style = '';
-      }
-    }
-    if (!isFormValid) {
-      evt.preventDefault();
-    }
+  var onAddressChange = function (evt) {
+    form.address.value = evt.target.offsetTop + ', ' + evt.target.offsetLeft;
   };
 
   var onTimeInChange = function () {
-    TIME_OUT_FIELD.value = TIME_IN_FIELD.value;
+    form.timeout.value = form.timein.value;
   };
 
   var onTimeOutchange = function () {
-    TIME_IN_FIELD.value = TIME_OUT_FIELD.value;
+    form.timein.value = form.timeout.value;
   };
 
-  TIME_IN_FIELD.addEventListener('change', onTimeInChange);
-  TIME_OUT_FIELD.addEventListener('change', onTimeOutchange);
-  MAIN_FORM.addEventListener('submit', onFormSubmit);
-  TYPE_FIELD.addEventListener('change', onTypeChange);
+  var onTypeChange = function () {
+    var minPrice = HOUSING_PRICES[form.type.value];
+    form.price.min = minPrice;
+    form.price.placeholder = minPrice;
+  };
 
-  var setAddress = function (coordinates) {
-    ADDRESS_FIELD.value = coordinates.left + ', ' + coordinates.top;
+  var disableForm = function () {
+    formFieldsets.forEach(function (fieldset) {
+      fieldset.disabled = true;
+    });
+    form.classList.add('ad-form--disabled');
+    form.timein.removeEventListener('change', onTimeInChange);
+    form.timeout.removeEventListener('change', onTimeOutchange);
+    form.type.removeEventListener('change', onTypeChange);
+    mainPin.removeEventListener('onAddressChange', onAddressChange);
+    form.removeEventListener('submit', onFormSubmit);
+    form.removeEventListener('reset', onFormReset);
+    form.rooms.removeEventListener('change', clearRoomsForGuestsValidity);
+    form.capacity.removeEventListener('change', clearRoomsForGuestsValidity);
+    form.avatar.removeEventListener('change', window.previewLoader.onFileChoose);
+    if (housingImagePreview !== null) {
+      deleteHousingPreview();
+    }
+    avatarPreview.src = DEFAULT_AVATAR_IMG;
+  };
+
+  var enableForm = function () {
+    formFieldsets.forEach(function (fieldset) {
+      fieldset.disabled = false;
+    });
+    form.classList.remove('ad-form--disabled');
+    form.timein.addEventListener('change', onTimeInChange);
+    form.timeout.addEventListener('change', onTimeOutchange);
+    form.type.addEventListener('change', onTypeChange);
+    mainPin.addEventListener('onAddressChange', onAddressChange);
+    form.addEventListener('submit', onFormSubmit);
+    form.addEventListener('reset', onFormReset);
+    form.rooms.addEventListener('change', clearRoomsForGuestsValidity);
+    form.capacity.addEventListener('change', clearRoomsForGuestsValidity);
+    form.avatar.addEventListener('change', window.previewLoader.onFileChoose.bind(null, avatarPreview, form.avatar));
+    form.images.addEventListener('change', window.previewLoader.onFileChoose.bind(null, createHousingPreview, form.images));
+  };
+
+  var clearRoomsForGuestsValidity = function () {
+    form.rooms.setCustomValidity('');
+    form.capacity.setCustomValidity('');
+  };
+
+  var validateRoomsForGuests = function () {
+    var valid = roomsForGuestsMap[form.rooms.value].includes(form.capacity.value);
+    return valid;
+  };
+
+  var changeFieldError = function (field, isError) {
+    if (isError) {
+      field.style = 'box-shadow: 0 0 2px 2px #ff6547;';
+    } else {
+      field.style = '';
+    }
+  };
+
+  var validateForm = function () {
+    var isFormValid = true;
+    if (!validateRoomsForGuests()) {
+      form.rooms.setCustomValidity('Количество гостей не подходит под комнаты');
+      form.capacity.setCustomValidity('Количество гостей не подходит под комнаты');
+    }
+    formFields.forEach(function (field) {
+      if (!field.validity.valid) {
+        isFormValid = false;
+      }
+      changeFieldError(field, !field.validity.valid);
+    });
+    return isFormValid;
+  };
+
+  var onFormSubmit = function (evt) {
+    evt.preventDefault();
+    var isFormValidated = validateForm();
+    if (isFormValidated) {
+      var formData = new FormData(form);
+      var ajaxSetting = {
+        method: 'POST',
+        url: 'https://js.dump.academy/keksobooking',
+        data: formData,
+        async: true,
+        success: window.handleMessagesModule.showSuccessMessage,
+        sendError: window.handleMessagesModule.showErrorMessage,
+      };
+      window.server.ajax(ajaxSetting);
+    }
+  };
+
+  var onFormReset = function (evt) {
+    window.entry.disablePage();
+    window.entry.start();
   };
 
   window.formModule = {
-    enableForm: enableForm,
     disableForm: disableForm,
-    setAddress: setAddress
+    enableForm: enableForm
   };
 })();

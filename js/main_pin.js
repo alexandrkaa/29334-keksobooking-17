@@ -83,7 +83,7 @@
     mainPin.addEventListener('mousedown', onMainPinMouseDown);
   };
 
-  window.mainPinModule = {
+  window.mainPin = {
     init: init,
     resetMainPin: resetMainPin
   };
