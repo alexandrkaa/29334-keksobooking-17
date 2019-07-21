@@ -3,7 +3,6 @@
 (function () {
   var PIN_WIDTH = 50; // defined in css
   var PIN_HEIGHT = 70; // defined in css
-  var ESC_KEYCODE = 27;
   var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
   var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
   var HOUSING_TYPES = {
@@ -12,6 +11,11 @@
     'house': 'Дом',
     'palace': 'Дворец'
   };
+  var cardPhotoSize = {
+    WIDTH: 40,
+    HEIGHT: 45
+  };
+
   var currentCard = null;
   var currentPin = null;
   var insertCardFunc = null;
@@ -53,8 +57,8 @@
     var photoElem = document.createElement('img');
     photoElem.src = photo;
     photoElem.alt = 'Фотография жилья';
-    photoElem.width = 40;
-    photoElem.height = 45;
+    photoElem.width = cardPhotoSize.WIDTH;
+    photoElem.height = cardPhotoSize.HEIGHT;
     return photoElem;
   };
 
@@ -108,7 +112,7 @@
     return template;
   };
 
-  window.advModule = {
+  window.adv = {
     createPin: createPin,
     createCard: createCard,
     closeCard: closeCard,

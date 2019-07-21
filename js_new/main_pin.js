@@ -4,6 +4,10 @@
   var mainPin = document.querySelector('.map__pin--main');
   var mapPinsBlock = document.querySelector('.map__pins');
   var mapPinsBlockWidth = mapPinsBlock.offsetWidth;
+  var mapVerticalSize = {
+    TOP: 130,
+    BOTTOM: 630
+  };
   var mainPinMouseUpHandler = null;
   var MAIN_PIN_TAIL_OFFSET = 6; // defined in css
   var MAIN_PIN_TAIL_SIZE = parseInt(window.getComputedStyle(mainPin, '::after').height, 10) - MAIN_PIN_TAIL_OFFSET;
@@ -14,7 +18,7 @@
   };
   var mainPinSize = {
     width: mainPin.offsetWidth,
-    height: mainPin.offsetheight + MAIN_PIN_TAIL_SIZE
+    height: mainPin.offsetHeight + MAIN_PIN_TAIL_SIZE
   };
   var Coordinates = function (x, y) {
     this.x = x;
@@ -35,17 +39,24 @@
       var shift = new Coordinates(startCoordinates.x - moveEvt.clientX, startCoordinates.y - moveEvt.clientY);
       startCoordinates = new Coordinates(moveEvt.clientX, moveEvt.clientY);
       var currentLeft = 0;
-      if ((mainPin.offsetLeft - shift.x) > mapPinsBlockWidth) {
-        currentLeft = mapPinsBlockWidth;
+      if ((mainPin.offsetLeft - shift.x + mainPinSize.width) > mapPinsBlockWidth) {
+        currentLeft = mapPinsBlockWidth - mainPinSize.width;
       } else
-      if ((mainPin.offsetLeft - shift.x) < 0) {
+      if ((mainPin.offsetLeft - shift.x + mainPinSize.width) < mainPinSize.width) {
         currentLeft = 0;
       } else {
         currentLeft = (mainPin.offsetLeft - shift.x);
       }
-
-      mainPin.style.top = (mainPin.offsetTop - shift.y) + 'px';
-      // mainPin.style.left = (mainPin.offsetLeft - shift.x) + 'px';
+      var currentVertical = 0;
+      if ((mainPin.offsetTop - shift.y) < mapVerticalSize.TOP) {
+        currentVertical = mapVerticalSize.TOP;
+      } else
+      if ((mainPin.offsetTop - shift.y) > mapVerticalSize.BOTTOM) {
+        currentVertical = mapVerticalSize.BOTTOM;
+      } else {
+        currentVertical = mainPin.offsetTop - shift.y;
+      }
+      mainPin.style.top = currentVertical + 'px';
       mainPin.style.left = currentLeft + 'px';
       mainPin.dispatchEvent(addressChangeEvent);
     };

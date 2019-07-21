@@ -128,7 +128,7 @@
     // filtredPins.forEach(function (pin) {
     //   console.log(pin.offer.features);
     // });
-    window.mapModule.insertElems(filtredPins, window.advModule.createPin);
+    window.mapModule.insertElems(filtredPins, window.adv.createPin);
     // console.log(filtredPins);
   };
 

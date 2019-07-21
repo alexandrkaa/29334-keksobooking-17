@@ -144,7 +144,7 @@
         success: window.handleMessagesModule.showSuccessMessage,
         sendError: window.handleMessagesModule.showErrorMessage,
       };
-      window.serverModule.ajax(ajaxSetting);
+      window.server.ajax(ajaxSetting);
     }
   };
 

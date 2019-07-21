@@ -53,7 +53,7 @@
     xhr.timeout = options.timeout;
     xhr.send(options.data);
   }
-  window.serverModule = {
+  window.server = {
     ajax: ajax
   };
 
