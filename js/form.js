@@ -135,8 +135,8 @@
         url: 'https://js.dump.academy/keksobooking',
         data: formData,
         async: true,
-        success: window.handleMessagesModule.showSuccessMessage,
-        sendError: window.handleMessagesModule.showErrorMessage,
+        success: window.handleMessages.showSuccessMessage,
+        sendError: window.handleMessages.showErrorMessage,
       };
       window.server.ajax(ajaxSetting);
     }

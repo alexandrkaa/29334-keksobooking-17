@@ -34,7 +34,7 @@
         window.data.set(response);
         start();
       },
-      sendError: window.handleMessagesModule.showErrorMessage
+      sendError: window.handleMessages.showErrorMessage
     });
   });
 

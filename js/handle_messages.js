@@ -9,11 +9,12 @@
     successMessageElement.remove();
     document.removeEventListener('keydown', window.utils.onEscPress);
     window.entry.disablePage();
+    window.entry.start();
   };
 
   var showSuccessMessage = function () {
     successMessageElement = successTemplate.cloneNode(true);
-    document.addEventListener('keydown', window.utils.onEscPress.bind(this, closeSuccessMessage));
+    document.addEventListener('keydown', window.utils.onEscPress.bind(null, closeSuccessMessage));
     successMessageElement.addEventListener('click', function () {
       closeSuccessMessage();
     });
@@ -33,13 +34,13 @@
           window.data.set(response);
           window.entry.start();
         },
-        sendError: window.handleMessagesModule.showErrorMessage
+        sendError: window.handleMessages.showErrorMessage
       });
     });
     mainBlock.appendChild(errorMessageElement);
   };
 
-  window.handleMessagesModule = {
+  window.handleMessages = {
     'showSuccessMessage': showSuccessMessage,
     'showErrorMessage': showErrorMessage
   };

@@ -74,8 +74,7 @@
   };
 
   var createCard = function (data) {
-
-    document.addEventListener('keydown', window.utils.onEscPress.bind(this, closeCard));
+    document.addEventListener('keydown', window.utils.onEscPress.bind(null, closeCard));
     var offer = data.offer;
     var template = cardTemplate.cloneNode(true);
     var cardAvatar = template.querySelector('.popup__avatar');
