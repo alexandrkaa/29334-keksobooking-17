@@ -8,7 +8,7 @@
     TOP: 130,
     BOTTOM: 630
   };
-  var mainPinMouseUpHandler = null;
+  var onMainPinMouseUp = null;
   var MAIN_PIN_TAIL_OFFSET = 6; // defined in css
   var MAIN_PIN_TAIL_SIZE = parseInt(window.getComputedStyle(mainPin, '::after').height, 10) - MAIN_PIN_TAIL_OFFSET;
   var addressChangeEvent = new Event('onAddressChange');
@@ -28,7 +28,7 @@
   var enablePage = function (action) {
     return function () {
       action();
-      mainPin.removeEventListener('mouseup', mainPinMouseUpHandler);
+      mainPin.removeEventListener('mouseup', onMainPinMouseUp);
     };
   };
 
@@ -78,8 +78,8 @@
   };
 
   var init = function (action) {
-    mainPinMouseUpHandler = enablePage(action);
-    mainPin.addEventListener('mouseup', mainPinMouseUpHandler);
+    onMainPinMouseUp = enablePage(action);
+    mainPin.addEventListener('mouseup', onMainPinMouseUp);
     mainPin.addEventListener('mousedown', onMainPinMouseDown);
   };
 

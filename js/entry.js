@@ -5,13 +5,13 @@
   var disablePage = function () {
     window.map.deleteElems();
     window.mainPin.resetMainPin();
-    window.formModule.disableForm();
+    window.form.disableForm();
     window.map.disableMap();
     window.filters.disable();
   };
 
   var enablePage = function () {
-    window.formModule.enableForm();
+    window.form.enableForm();
     window.map.enableMap();
     window.filters.enable();
   };

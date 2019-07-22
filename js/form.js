@@ -56,6 +56,7 @@
   };
 
   var disableForm = function () {
+    form.reset();
     formFieldsets.forEach(function (fieldset) {
       fieldset.disabled = true;
     });
@@ -73,6 +74,7 @@
       deleteHousingPreview();
     }
     avatarPreview.src = DEFAULT_AVATAR_IMG;
+    onTypeChange();
   };
 
   var enableForm = function () {
@@ -90,6 +92,7 @@
     form.capacity.addEventListener('change', clearRoomsForGuestsValidity);
     form.avatar.addEventListener('change', window.previewLoader.onFileChoose.bind(null, avatarPreview, form.avatar));
     form.images.addEventListener('change', window.previewLoader.onFileChoose.bind(null, createHousingPreview, form.images));
+    onTypeChange();
   };
 
   var clearRoomsForGuestsValidity = function () {
@@ -103,11 +106,7 @@
   };
 
   var changeFieldError = function (field, isError) {
-    if (isError) {
-      field.style = 'box-shadow: 0 0 2px 2px #ff6547;';
-    } else {
-      field.style = '';
-    }
+    field.style = (isError ? 'box-shadow: 0 0 2px 2px #ff6547;' : '');
   };
 
   var validateForm = function () {
@@ -147,7 +146,7 @@
     window.entry.start();
   };
 
-  window.formModule = {
+  window.form = {
     disableForm: disableForm,
     enableForm: enableForm
   };

@@ -2,6 +2,15 @@
 
 (function () {
   var filterForm = document.querySelector('.map__filters');
+  var filterFeatures = filterForm.querySelectorAll('.map__checkbox');
+  var housingFilterData = {
+    type: 'any',
+    price: 'any',
+    rooms: 'any',
+    guests: 'any',
+    features: []
+  };
+  // var filterFeatures = Array.from(filterForm.querySelectorAll('.map__feature'));
   var changeFiltersDisableState = function (state) {
     var stateToSet = state || false;
     Array.from(filterForm.elements).forEach(function (filter) {
@@ -9,20 +18,32 @@
     });
   };
 
+  var changeFeatureState = function (evt) {
+    var chkbox = evt.target;
+    chkbox.checked = chkbox.checked === true ? false : true;
+    onChangeFilter(evt);
+  };
+
+  var enebleEnterOnFeatures = function () {
+    filterFeatures.forEach(function (feature) {
+      feature.addEventListener('keydown', window.utils.onEnterPress.bind(null, changeFeatureState));
+    });
+  };
+
+  var disableEnterOnFeatures = function () {
+    filterFeatures.forEach(function (featureLabel) {
+      featureLabel.removeEventListener('keydown', window.utils.onEnterPress);
+    });
+  };
+
   var enable = function () {
     changeFiltersDisableState(false);
+    enebleEnterOnFeatures();
   };
 
   var disable = function () {
+    disableEnterOnFeatures();
     changeFiltersDisableState(true);
-  };
-
-  var housingFilterData = {
-    type: 'any',
-    price: 'any',
-    rooms: 'any',
-    guests: 'any',
-    features: []
   };
 
   var housingPrice = {
