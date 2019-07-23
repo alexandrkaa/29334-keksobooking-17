@@ -12,7 +12,7 @@
     if (typeof pictureElem === 'function') {
       pictureElem = pictureElem();
     }
-    var file = fileChooser.files[0];
+    var file = fileChooser.files[fileChooser.files.length - 1];
     var fileName = file.name.toLowerCase();
 
     var matches = FILE_TYPES.some(function (it) {
