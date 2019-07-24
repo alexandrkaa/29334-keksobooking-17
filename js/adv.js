@@ -8,13 +8,14 @@
   var closeCardEvent = new Event('closeCard', {
     'bubbles': true
   });
-  var HOUSING_TYPES = {
-    'bungalo': 'Бунгало',
-    'flat': 'Квартира',
-    'house': 'Дом',
-    'palace': 'Дворец'
+
+  var HousingTypes = {
+    BUNGALO: 'Бунгало',
+    FLAT: 'Квартира',
+    HOUSE: 'Дом',
+    PALACE: 'Дворец'
   };
-  var cardPhotoSize = {
+  var CardPhotoSize = {
     WIDTH: 40,
     HEIGHT: 45
   };
@@ -60,8 +61,8 @@
     var photoElem = document.createElement('img');
     photoElem.src = photo;
     photoElem.alt = 'Фотография жилья';
-    photoElem.width = cardPhotoSize.WIDTH;
-    photoElem.height = cardPhotoSize.HEIGHT;
+    photoElem.width = CardPhotoSize.WIDTH;
+    photoElem.height = CardPhotoSize.HEIGHT;
     return photoElem;
   };
 
@@ -86,7 +87,7 @@
     var cardPrice = template.querySelector('.popup__text--price');
     cardPrice.textContent = offer.price;
     var housingType = template.querySelector('.popup__type');
-    housingType.textContent = HOUSING_TYPES[offer.type];
+    housingType.textContent = HousingTypes[offer.type.toUpperCase()];
     var cardCapacity = template.querySelector('.popup__text--capacity');
     cardCapacity.textContent = offer.rooms + ' комнаты для ' + offer.guests + ' гостей';
     var cardTime = template.querySelector('.popup__text--time');

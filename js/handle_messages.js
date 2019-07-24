@@ -41,24 +41,6 @@
     });
     mainBlock.appendChild(errorMessageElement);
   };
-  // var showErrorMessage = function () {
-  //   var errorMessageElement = errorTemplate.cloneNode(true);
-  //   var reloadButton = errorMessageElement.querySelector('.error__button');
-  //   reloadButton.addEventListener('click', function () {
-  //     errorMessageElement.remove();
-  //     window.server.ajax({
-  //       url: 'https://js.dump.academy/keksobooking/data',
-  //       type: 'json',
-  //       timeout: 3000,
-  //       success: function (response) {
-  //         window.data.set(response);
-  //         window.entry.start();
-  //       },
-  //       sendError: window.handleMessages.showErrorMessage
-  //     });
-  //   });
-  //   mainBlock.appendChild(errorMessageElement);
-  // };
 
   window.handleMessages = {
     'showSuccessMessage': showSuccessMessage,

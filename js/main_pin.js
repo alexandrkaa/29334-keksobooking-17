@@ -4,7 +4,7 @@
   var mainPin = document.querySelector('.map__pin--main');
   var mapPinsBlock = document.querySelector('.map__pins');
   var mapPinsBlockWidth = mapPinsBlock.offsetWidth;
-  var mapVerticalSize = {
+  var MapVerticalSize = {
     TOP: 130,
     BOTTOM: 630
   };
@@ -12,7 +12,7 @@
   var MAIN_PIN_TAIL_OFFSET = 6; // defined in css
   var MAIN_PIN_TAIL_SIZE = parseInt(window.getComputedStyle(mainPin, '::after').height, 10) - MAIN_PIN_TAIL_OFFSET;
   var addressChangeEvent = new Event('onAddressChange');
-  var mainPinDefaultPosition = {
+  var MainPinDefaultPosition = {
     LEFT: '570px',
     TOP: '375px'
   };
@@ -48,11 +48,11 @@
         currentLeft = (mainPin.offsetLeft - shift.x);
       }
       var currentVertical = 0;
-      if ((mainPin.offsetTop - shift.y) < mapVerticalSize.TOP) {
-        currentVertical = mapVerticalSize.TOP;
+      if ((mainPin.offsetTop - shift.y) < MapVerticalSize.TOP) {
+        currentVertical = MapVerticalSize.TOP;
       } else
-      if ((mainPin.offsetTop - shift.y) > mapVerticalSize.BOTTOM) {
-        currentVertical = mapVerticalSize.BOTTOM;
+      if ((mainPin.offsetTop - shift.y) > MapVerticalSize.BOTTOM) {
+        currentVertical = MapVerticalSize.BOTTOM;
       } else {
         currentVertical = mainPin.offsetTop - shift.y;
       }
@@ -72,8 +72,8 @@
   };
 
   var resetMainPin = function () {
-    mainPin.style.left = mainPinDefaultPosition.LEFT;
-    mainPin.style.top = mainPinDefaultPosition.TOP;
+    mainPin.style.left = MainPinDefaultPosition.LEFT;
+    mainPin.style.top = MainPinDefaultPosition.TOP;
     mainPin.dispatchEvent(addressChangeEvent);
   };
 

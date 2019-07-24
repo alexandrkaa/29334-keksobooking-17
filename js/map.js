@@ -22,12 +22,6 @@
       });
       mapBlock.appendChild(fragment);
     } else { // вставляем карточку объявления
-      var index = mapElems.findIndex(function (elem) {
-        return elem.classList.contains('popup');
-      });
-      if (index !== -1) {
-        mapElems.splice(index, 1);
-      }
       node = renderElem(elemData);
       mapBlock.lastElementChild.insertAdjacentElement('beforeBegin', node);
       mapElems.push(node);
@@ -38,7 +32,6 @@
     mapElems.forEach(function (elem) {
       elem.remove();
     });
-    // mapElems = [];
     mapElems.splice(0, mapElems.length);
   };
 
@@ -47,7 +40,7 @@
       return evt.target.classList.contains('popup');
     });
     if (index !== -1) {
-      mapElems.splice(index, 1);
+      mapElems.splice((index - 1), 1);
     }
     evt.target.remove();
   });

@@ -3,6 +3,14 @@
 
   var ESC_KEYCODE = 27;
   var ENTER_KEYCODE = 13;
+  var DEBOUNCE_INTERVAL = 500;
+  var lastTimeout;
+  var debounce = function (action, param) {
+    if (lastTimeout) {
+      window.clearTimeout(lastTimeout);
+    }
+    lastTimeout = window.setTimeout(action.bind(null, param), DEBOUNCE_INTERVAL);
+  };
 
   var onEscPress = function (action, evt) {
     if (evt.keyCode === ESC_KEYCODE) {
@@ -24,7 +32,8 @@
 
   window.utils = {
     onEscPress: onEscPress,
-    onEnterPress: onEnterPress
+    onEnterPress: onEnterPress,
+    debounce: debounce
   };
 
 })();
