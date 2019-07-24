@@ -38,7 +38,8 @@
     mapElems.forEach(function (elem) {
       elem.remove();
     });
-    mapElems = [];
+    // mapElems = [];
+    mapElems.splice(0, mapElems.length);
   };
 
   document.addEventListener('closeCard', function (evt) {
