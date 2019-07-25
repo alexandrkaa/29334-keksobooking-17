@@ -27,7 +27,7 @@
   var changeFeatureState = function (evt) {
     var chkbox = evt.target;
     chkbox.checked = chkbox.checked === true ? false : true;
-    changeFilter(evt);
+    onChangeFilter(evt);
   };
 
   var enebleEnterOnFeatures = function () {
