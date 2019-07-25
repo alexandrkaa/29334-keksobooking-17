@@ -80,6 +80,9 @@
     formFieldsets.forEach(function (fieldset) {
       fieldset.disabled = true;
     });
+    formFeatures.forEach(function (it) {
+      it.checked = false;
+    });
     form.classList.add('ad-form--disabled');
     form.timein.removeEventListener('change', onTimeInChange);
     form.timeout.removeEventListener('change', onTimeOutchange);
