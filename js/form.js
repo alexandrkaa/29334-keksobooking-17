@@ -8,11 +8,11 @@
   var avatarPreview = form.querySelector('.ad-form-header__preview img');
   var housingImagePreviewBlock = form.querySelector('.ad-form__photo');
   var housingImagePreview = null;
-  var HOUSING_PRICES = {
-    'bungalo': 0,
-    'flat': 1000,
-    'house': 5000,
-    'palace': 10000
+  var HousingPrices = {
+    BUNGALO: 0,
+    FLAT: 1000,
+    HOUSE: 5000,
+    PALACE: 10000
   };
   var DEFAULT_AVATAR_IMG = 'img/muffin-grey.svg';
   var roomsForGuestsMap = {
@@ -50,7 +50,7 @@
   };
 
   var onTypeChange = function () {
-    var minPrice = HOUSING_PRICES[form.type.value];
+    var minPrice = HousingPrices[form.type.value.toUpperCase()];
     form.price.min = minPrice;
     form.price.placeholder = minPrice;
   };

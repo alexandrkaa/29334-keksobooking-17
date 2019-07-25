@@ -3,6 +3,7 @@
 (function () {
   var AJAX_COMPLETED = 4; // ajax запрос выполнен
   var HTTP_OK = 200; // сервер ответил OK
+  var NETWORK_TIMEOUT = 3000;
 
   function ajax(settings) {
     // принимает в кач. параметра настройки
@@ -16,7 +17,7 @@
       type: '', // тип получаемых данных
       readyStateChange: null, // функция обработки ответа сервера
       headers: {}, // заголовки для сервера
-      timeout: 3000
+      timeout: NETWORK_TIMEOUT
     };
     // сформируем опции запроса на основе дефолтных настроек и переданных опций
     var options = Object.assign(ajaxSettings, settings);

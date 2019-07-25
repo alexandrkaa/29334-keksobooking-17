@@ -5,6 +5,7 @@
   var ENTER_KEYCODE = 13;
   var DEBOUNCE_INTERVAL = 500;
   var lastTimeout;
+
   var debounce = function (action, param) {
     if (lastTimeout) {
       window.clearTimeout(lastTimeout);
