@@ -188,6 +188,7 @@
           it.value = '';
           break;
       }
+      it.style = '';
     });
 
   };
