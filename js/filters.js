@@ -17,6 +17,12 @@
     HIHGH_PRICE: 50000
   };
 
+  var resetFeatures = function () {
+    Array.from(filterFeatures).forEach(function (feature) {
+      feature.checked = false;
+    });
+  };
+
   var changeFiltersDisableState = function (state) {
     var stateToSet = state || false;
     Array.from(filterForm.elements).forEach(function (filter) {
@@ -30,15 +36,19 @@
     onChangeFilter(evt);
   };
 
+  var onEnterPress = function (evt) {
+    return window.utils.onEnterPress(changeFeatureState, evt);
+  };
+
   var enebleEnterOnFeatures = function () {
     filterFeatures.forEach(function (feature) {
-      feature.addEventListener('keydown', window.utils.onEnterPress.bind(null, changeFeatureState));
+      feature.addEventListener('keydown', onEnterPress);
     });
   };
 
   var disableEnterOnFeatures = function () {
     filterFeatures.forEach(function (featureLabel) {
-      featureLabel.removeEventListener('keydown', window.utils.onEnterPress);
+      featureLabel.removeEventListener('keydown', onEnterPress);
     });
   };
 
@@ -50,6 +60,7 @@
   var disable = function () {
     disableEnterOnFeatures();
     changeFiltersDisableState(true);
+    resetFeatures();
   };
 
   var housingFilter = function (offer, filterType) {

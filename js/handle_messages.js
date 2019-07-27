@@ -9,6 +9,7 @@
   var closeSuccessMessage = function () {
     successMessageElement.remove();
     document.removeEventListener('keydown', window.utils.onEscPress);
+    window.form.resetForm();
     window.entry.disablePage();
     window.entry.start();
   };
@@ -22,22 +23,25 @@
     mainBlock.appendChild(successMessageElement);
   };
 
-  var closeErrorMessage = function () {
+  var closeErrorMessage = function (sendMethod) {
     errorMessageElement.remove();
     document.removeEventListener('keydown', window.utils.onEscPress);
-    window.entry.disablePage();
-    window.entry.start();
+    if (sendMethod === 'GET') {
+      window.entry.disablePage();
+      window.entry.start();
+    }
   };
 
-  var showErrorMessage = function () {
+  var showErrorMessage = function (message, method) {
+    var sendMethod = method || 'GET';
     errorMessageElement = errorTemplate.cloneNode(true);
     var reloadButton = errorMessageElement.querySelector('.error__button');
-    document.addEventListener('keydown', window.utils.onEscPress.bind(null, closeErrorMessage));
+    document.addEventListener('keydown', window.utils.onEscPress.bind(null, closeErrorMessage.bind(null, sendMethod)));
     reloadButton.addEventListener('click', function () {
-      closeErrorMessage();
+      closeErrorMessage(sendMethod);
     });
     errorMessageElement.addEventListener('click', function () {
-      closeErrorMessage();
+      closeErrorMessage(sendMethod);
     });
     mainBlock.appendChild(errorMessageElement);
   };

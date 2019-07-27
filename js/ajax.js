@@ -6,7 +6,6 @@
   var NETWORK_TIMEOUT = 3000;
 
   function ajax(settings) {
-    // принимает в кач. параметра настройки
     var ajaxSettings = {
       method: 'GET', // метод запроса
       url: '', // адрес запроса
@@ -19,15 +18,11 @@
       headers: {}, // заголовки для сервера
       timeout: NETWORK_TIMEOUT
     };
-    // сформируем опции запроса на основе дефолтных настроек и переданных опций
     var options = Object.assign(ajaxSettings, settings);
-    // создадим объект запроса
     var xhr = new XMLHttpRequest();
     xhr.responseType = options.type;
     xhr.open(options.method, options.url, options.async);
-    // установим заголовок, сообщающий серверу, что это именно AJAX-запрос
     xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-    // установим остальные заголовки если есть
     for (var key in options.headers) {
       if (options.headers.hasOwnProperty(key)) {
         xhr.setRequestHeader(key, options.headers[key]);
@@ -40,13 +35,13 @@
       }
       if (xhr.readyState === AJAX_COMPLETED && xhr.status !== HTTP_OK) {
         if (typeof options.sendError === 'function') {
-          options.sendError(xhr.response);
+          options.sendError(xhr.response, options.method);
         }
       }
     };
     xhr.onerror = function () {
       if (typeof options.sendError === 'function') {
-        options.sendError('Ошибка соединения!');
+        options.sendError('Ошибка соединения!', options.method);
       }
     };
     xhr.timeout = options.timeout;

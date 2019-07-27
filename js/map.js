@@ -21,7 +21,7 @@
         mapElems.push(node);
       });
       mapBlock.appendChild(fragment);
-    } else { // вставляем карточку объявления
+    } else {
       node = renderElem(elemData);
       mapBlock.lastElementChild.insertAdjacentElement('beforeBegin', node);
       mapElems.push(node);

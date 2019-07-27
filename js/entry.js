@@ -2,7 +2,7 @@
 
 (function () {
 
-  var NETWORK_TIMEOUT = 3000;
+  var NETWORK_TIMEOUT = 5000;
   var SERVER_URL = 'https://js.dump.academy/keksobooking/data';
   var TRANSFER_DATA_TYPE = 'json';
 
@@ -38,6 +38,7 @@
   };
 
   document.addEventListener('DOMContentLoaded', function () {
+    disablePage();
     start();
   });
 

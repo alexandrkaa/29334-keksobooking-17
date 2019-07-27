@@ -1,9 +1,11 @@
 'use strict';
 
 (function () {
+  var SERVER_URL = 'https://js.dump.academy/keksobooking';
+
   var form = document.querySelector('.ad-form');
   var mainPin = document.querySelector('.map__pin--main');
-  var formFields = Array.from(form.querySelectorAll('input, select'));
+  var formFields = Array.from(form.querySelectorAll('input, select, textarea'));
   var formFieldsets = Array.from(form.querySelectorAll('fieldset'));
   var avatarPreview = form.querySelector('.ad-form-header__preview img');
   var housingImagePreviewBlock = form.querySelector('.ad-form__photo');
@@ -30,13 +32,17 @@
 
   var enebleEnterOnFormFeatures = function () {
     formFeatures.forEach(function (feature) {
-      feature.addEventListener('keydown', window.utils.onEnterPress.bind(null, changeFormFeatureState));
+      feature.addEventListener('keydown', onEnterPress);
     });
   };
 
+  var onEnterPress = function (evt) {
+    return window.utils.onEnterPress(changeFormFeatureState, evt);
+  };
+
   var disableEnterOnFormFeatures = function () {
-    formFeatures.forEach(function (featureLabel) {
-      featureLabel.removeEventListener('keydown', window.utils.onEnterPress);
+    formFeatures.forEach(function (feature) {
+      feature.removeEventListener('keydown', onEnterPress);
     });
   };
 
@@ -57,7 +63,6 @@
 
   var onAddressChange = function (evt) {
     form.address.value = evt.target.offsetTop + ', ' + evt.target.offsetLeft;
-    // console.log(form.address.value, evt.target.offsetTop + ', ' + evt.target.offsetLeft);
   };
 
   var onTimeInChange = function () {
@@ -75,8 +80,6 @@
   };
 
   var disableForm = function () {
-    form.reset();
-    window.mainPin.resetMainPin();
     formFieldsets.forEach(function (fieldset) {
       fieldset.disabled = true;
     });
@@ -156,7 +159,7 @@
       var formData = new FormData(form);
       var ajaxSetting = {
         method: 'POST',
-        url: 'https://js.dump.academy/keksobooking',
+        url: SERVER_URL,
         data: formData,
         async: true,
         success: window.handleMessages.showSuccessMessage,
@@ -166,15 +169,39 @@
     }
   };
 
+  var resetForm = function () {
+    formFields.forEach(function (it) {
+      switch (it.type) {
+        case 'text':
+        case 'number':
+        case 'file':
+        case 'textarea':
+          it.value = '';
+          break;
+        case 'checkbox':
+          it.checked = false;
+          break;
+        case 'select-one':
+          it.value = it.querySelector('option[selected]').value;
+          break;
+        default:
+          it.value = '';
+          break;
+      }
+    });
+
+  };
+
   var onFormReset = function (evt) {
     evt.preventDefault();
+    resetForm();
     window.entry.disablePage();
     window.entry.start();
-    // window.mainPin.resetMainPin();
   };
 
   window.form = {
     disableForm: disableForm,
-    enableForm: enableForm
+    enableForm: enableForm,
+    resetForm: resetForm
   };
 })();
