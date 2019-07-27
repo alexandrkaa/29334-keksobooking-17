@@ -81,17 +81,13 @@
     form.price.placeholder = minPrice;
   };
 
-  // var onFileChoose = function (pictureElem, evt) {
-  //   return window.previewLoader.onFileChoose(pictureElem, evt.target);
-  // };
-
   var onImagesChoose = function (evt) {
     return window.previewLoader.onFileChoose(createHousingPreview, evt);
   };
 
   var onAvatarChoose = function (evt) {
     return window.previewLoader.onFileChoose(avatarPreview, evt);
-  }
+  };
 
   var disableForm = function () {
     formFieldsets.forEach(function (fieldset) {
@@ -109,13 +105,8 @@
     form.removeEventListener('reset', onFormReset);
     form.rooms.removeEventListener('change', clearRoomsForGuestsValidity);
     form.capacity.removeEventListener('change', clearRoomsForGuestsValidity);
-
-    // form.avatar.removeEventListener('change', window.previewLoader.onFileChoose.bind(null, avatarPreview));
-    // form.images.removeEventListener('change', window.previewLoader.onFileChoose.bind(null, createHousingPreview));
     form.avatar.removeEventListener('change', onAvatarChoose);
     form.images.removeEventListener('change', onImagesChoose);
-    // debugger;
-    // document.querySelector('#images').removeEventListener('change', onFileChoose);
     if (housingImagePreview !== null) {
       deleteHousingPreview();
     }
@@ -137,8 +128,6 @@
     form.addEventListener('reset', onFormReset);
     form.rooms.addEventListener('change', clearRoomsForGuestsValidity);
     form.capacity.addEventListener('change', clearRoomsForGuestsValidity);
-    // form.avatar.addEventListener('change', window.previewLoader.onFileChoose.bind(null, avatarPreview));
-    // form.images.addEventListener('change', window.previewLoader.onFileChoose.bind(null, createHousingPreview));
     form.avatar.addEventListener('change', onAvatarChoose);
     form.images.addEventListener('change', onImagesChoose);
     onTypeChange();

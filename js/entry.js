@@ -2,7 +2,6 @@
 
 (function () {
 
-  var NETWORK_TIMEOUT = 5000;
   var SERVER_URL = 'https://js.dump.academy/keksobooking/data';
   var TRANSFER_DATA_TYPE = 'json';
 
@@ -27,7 +26,6 @@
       window.server.ajax({
         url: SERVER_URL,
         type: TRANSFER_DATA_TYPE,
-        timeout: NETWORK_TIMEOUT,
         success: function (response) {
           window.data.set(response);
           window.map.insertElems(window.data.get().slice(0, 5), window.adv.createPin);
