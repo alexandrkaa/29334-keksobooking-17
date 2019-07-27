@@ -3,7 +3,7 @@
 (function () {
   var AJAX_COMPLETED = 4; // ajax запрос выполнен
   var HTTP_OK = 200; // сервер ответил OK
-  var NETWORK_TIMEOUT = 3000;
+  var NETWORK_TIMEOUT = 5000;
 
   function ajax(settings) {
     var ajaxSettings = {
@@ -30,6 +30,7 @@
 
     }
     xhr.onreadystatechange = options.readyStateChange || function () {
+      console.log(xhr);
       if (xhr.readyState === AJAX_COMPLETED && xhr.status === HTTP_OK) {
         options.success(xhr.response);
       }

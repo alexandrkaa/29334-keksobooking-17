@@ -8,7 +8,8 @@
     reader.addEventListener('load', onFileLoaded);
   };
 
-  var onFileChoose = function (pictureElem, fileChooser) {
+  var onFileChoose = function (pictureElem, evt) {
+    var fileChooser = evt.target;
     if (typeof pictureElem === 'function') {
       pictureElem = pictureElem();
     }
