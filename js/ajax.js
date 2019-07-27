@@ -30,7 +30,6 @@
 
     }
     xhr.onreadystatechange = options.readyStateChange || function () {
-      console.log(xhr);
       if (xhr.readyState === AJAX_COMPLETED && xhr.status === HTTP_OK) {
         options.success(xhr.response);
       }
