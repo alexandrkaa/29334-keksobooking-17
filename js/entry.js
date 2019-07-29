@@ -19,7 +19,7 @@
   //   // window.filters.enable();
   // };
 
-  var start = function () {
+  var start = function (timeout) {
     window.adv.init(window.map.insertElems);
     window.mainPin.init(function () {
       // enablePage();
@@ -27,6 +27,7 @@
       window.server.ajax({
         url: SERVER_URL,
         type: TRANSFER_DATA_TYPE,
+        // timeout: timeout || 5000,
         success: function (response) {
           // enablePage();
           window.filters.enable();

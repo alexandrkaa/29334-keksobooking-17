@@ -64,7 +64,7 @@
   };
 
   var onAddressChange = function (evt) {
-    console.log(evt.target.offsetTop + ', ' + evt.target.offsetLeft);
+    // console.log(evt.target.offsetTop + ', ' + evt.target.offsetLeft);
     form.address.value = evt.target.offsetTop + ', ' + evt.target.offsetLeft;
   };
 

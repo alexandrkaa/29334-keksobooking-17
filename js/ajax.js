@@ -1,7 +1,14 @@
 'use strict';
 
 (function () {
-  var AJAX_COMPLETED = 4; // ajax запрос выполнен
+  var AjaxStates = {
+    AJAX_COMPLETED: 4,
+  };
+  var AjaxStatuses = {
+    UNSENT: 0,
+    DONE: 200
+  };
+  // var AJAX_COMPLETED = 4; // ajax запрос выполнен
   var HTTP_OK = 200; // сервер ответил OK
   var NETWORK_TIMEOUT = 5000;
 
@@ -20,6 +27,7 @@
     };
     var options = Object.assign(ajaxSettings, settings);
     var xhr = new XMLHttpRequest();
+    console.log(xhr.readyState, xhr.status, xhr.statusText);
     xhr.responseType = options.type;
     xhr.open(options.method, options.url, options.async);
     xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
@@ -27,25 +35,34 @@
       if (options.headers.hasOwnProperty(key)) {
         xhr.setRequestHeader(key, options.headers[key]);
       }
-
     }
+    console.log(xhr.readyState, xhr.status, xhr.statusText);
     xhr.onreadystatechange = options.readyStateChange || function () {
-      if (xhr.readyState === AJAX_COMPLETED && xhr.status === HTTP_OK) {
+      console.log(xhr.readyState, xhr.status, xhr.statusText);
+      if (xhr.readyState === AjaxStates.AJAX_COMPLETED && xhr.status === AjaxStatuses.DONE) {
         options.success(xhr.response);
       }
-      if (xhr.readyState === AJAX_COMPLETED && xhr.status !== HTTP_OK) {
+      if (xhr.readyState === AjaxStates.AJAX_COMPLETED && xhr.status !== AjaxStatuses.DONE) {
         if (typeof options.sendError === 'function') {
           options.sendError(xhr.response, options.method);
         }
       }
     };
-    xhr.onerror = function () {
-      if (typeof options.sendError === 'function') {
-        options.sendError('Ошибка соединения!', options.method);
-      }
-    };
+
+    // xhr.onerror = function () {
+    //   if (typeof options.sendError === 'function') {
+    //     console.log(xhr);
+    //     options.sendError('Ошибка соединения!', options.method);
+    //   }
+    // };
     xhr.timeout = options.timeout;
+    // debugger;
     xhr.send(options.data);
+    // try {
+    //   // xhr.send(options.data);
+    // } catch (err_) {
+    //   console.log(err_);
+    // }
   }
   window.server = {
     ajax: ajax

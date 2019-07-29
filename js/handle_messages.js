@@ -24,7 +24,10 @@
   };
 
   var closeErrorMessage = function (sendMethod) {
+    // debugger;
+    // window.errorMessageElement = errorMessageElement;
     errorMessageElement.remove();
+    // errorMessageElement = null;
     document.removeEventListener('keydown', window.utils.onEscPress);
     if (sendMethod === 'GET') {
       window.entry.disablePage();
@@ -33,6 +36,7 @@
   };
 
   var showErrorMessage = function (message, method) {
+    // console.log(message);
     var sendMethod = method || 'GET';
     errorMessageElement = errorTemplate.cloneNode(true);
     var reloadButton = errorMessageElement.querySelector('.error__button');
@@ -47,7 +51,7 @@
   };
 
   window.handleMessages = {
-    'showSuccessMessage': showSuccessMessage,
-    'showErrorMessage': showErrorMessage
+    showSuccessMessage: showSuccessMessage,
+    showErrorMessage: showErrorMessage
   };
 })();
