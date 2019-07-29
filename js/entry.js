@@ -13,20 +13,24 @@
     window.filters.disable();
   };
 
-  var enablePage = function () {
-    window.form.enableForm();
-    window.map.enableMap();
-    window.filters.enable();
-  };
+  // var enablePage = function () {
+  //   window.form.enableForm();
+  //   // window.map.enableMap();
+  //   // window.filters.enable();
+  // };
 
   var start = function () {
     window.adv.init(window.map.insertElems);
     window.mainPin.init(function () {
-      enablePage();
+      // enablePage();
+      window.form.enableForm();
       window.server.ajax({
         url: SERVER_URL,
         type: TRANSFER_DATA_TYPE,
         success: function (response) {
+          // enablePage();
+          window.filters.enable();
+          window.map.enableMap();
           window.data.set(response);
           window.map.insertElems(window.data.get().slice(0, 5), window.adv.createPin);
         },
@@ -42,7 +46,7 @@
 
   window.entry = {
     disablePage: disablePage,
-    enablePage: enablePage,
+    // enablePage: enablePage,
     start: start
   };
 })();

@@ -11,6 +11,7 @@
   var enableMap = function () {
     mapBlock.classList.remove('map--faded');
   };
+
   var insertElems = function (elemData, renderElem) {
     var node = null;
     if (Array.isArray(elemData)) {

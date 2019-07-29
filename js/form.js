@@ -64,6 +64,7 @@
   };
 
   var onAddressChange = function (evt) {
+    console.log(evt.target.offsetTop + ', ' + evt.target.offsetLeft);
     form.address.value = evt.target.offsetTop + ', ' + evt.target.offsetLeft;
   };
 
@@ -211,6 +212,8 @@
     window.entry.disablePage();
     window.entry.start();
   };
+
+  // mainPin.addEventListener('onAddressChange', onAddressChange);
 
   window.form = {
     disableForm: disableForm,
