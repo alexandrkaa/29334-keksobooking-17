@@ -11,7 +11,7 @@
   // var AJAX_COMPLETED = 4; // ajax запрос выполнен
   // var HTTP_OK = 200; // сервер ответил OK
   // var NETWORK_TIMEOUT = 5000;
-  var NETWORK_TIMEOUT = 50;
+  var NETWORK_TIMEOUT = 5000;
 
   function ajax(settings) {
     var ajaxSettings = {

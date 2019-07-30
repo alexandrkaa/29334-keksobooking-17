@@ -5,7 +5,8 @@
 
   var onFileLoaded = function (pictureElem, reader) {
     pictureElem.src = reader.result;
-    reader.addEventListener('load', onFileLoaded);
+    // reader.addEventListener('load', onFileLoaded);
+    reader.removeEventListener('load', onFileLoaded);
   };
 
   var onFileChoose = function (pictureElem, evt) {

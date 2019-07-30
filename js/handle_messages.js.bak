@@ -32,35 +32,27 @@
   //   return window.utils.onEscPress(closeErrorMessage, evt);
   // };
 
-  var onEscCloseErrorMessageOnGetRequest = function (evt) {
-    return window.utils.onEscPress(closeErrorMessage.bind(null, 'GET'), evt);
-  };
-
-  var onEscCloseErrorMessageOnPostRequest = function (evt) {
-    return window.utils.onEscPress(closeErrorMessage.bind(null, 'GET'), evt);
-  };
-
   var closeErrorMessage = function (sendMethod) {
     console.log(sendMethod);
     // debugger;
     // window.errorMessageElement = errorMessageElement;
-    errorMessageElement.remove();
+    try {
+      errorMessageElement.remove();
+    } catch(err_) {
+      console.log(err_);
+    }
     console.log(errorMessageElement);
     // errorMessageElement = null;
     // document.removeEventListener('keydown', window.utils.onEscPress);
-    // debugger;
-    // document.removeEventListener('keydown', onEscCloseErrorMessage);
+    debugger;
+    document.removeEventListener('keydown', onEscCloseErrorMessage);
     if (sendMethod === 'GET') {
-      document.removeEventListener('keydown', onEscCloseErrorMessageOnGetRequest);
       window.entry.disablePage();
       window.entry.start();
-    } else {
-      document.removeEventListener('keydown', onEscCloseErrorMessageOnPostRequest);
     }
   };
 
-  var showErrorMessage = function (method) {
-    // console.log(arguments);
+  var showErrorMessage = function (message, method) {
     // console.log(message);
     var sendMethod = method || 'GET';
     errorMessageElement = null;
@@ -68,12 +60,7 @@
     // var reloadButton = errorMessageElement.querySelector('.error__button');
 
     // document.addEventListener('keydown', window.utils.onEscPress.bind(null, closeErrorMessage.bind(null, sendMethod)));
-    // document.addEventListener('keydown', onEscCloseErrorMessage.bind(null, sendMethod));
-    if (sendMethod === 'GET') {
-      document.addEventListener('keydown', onEscCloseErrorMessageOnGetRequest);
-    } else {
-      document.addEventListener('keydown', onEscCloseErrorMessageOnPostRequest);
-    }
+    document.addEventListener('keydown', onEscCloseErrorMessage.bind(null, sendMethod));
 
     // reloadButton.addEventListener('click', function () {
     //   closeErrorMessage(sendMethod);

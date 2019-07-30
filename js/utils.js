@@ -15,11 +15,9 @@
 
   var onEscPress = function (action, evt) {
     if (evt.keyCode === ESC_KEYCODE) {
-      debugger;
       evt.preventDefault();
-      evt.stopPropagation();
       if (action !== undefined && typeof action === 'function') {
-        action();
+        action(evt);
       }
     }
   };
