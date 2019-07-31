@@ -19,7 +19,7 @@
   //   // window.filters.enable();
   // };
 
-  var start = function (timeout) {
+  var start = function () {
     window.adv.init(window.map.insertElems);
     window.mainPin.init(function () {
       // enablePage();

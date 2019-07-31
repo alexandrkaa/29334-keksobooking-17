@@ -12,6 +12,7 @@
   var housingImagePreviewBlock = form.querySelector('.ad-form__photo');
   var formFeatures = Array.from(form.querySelectorAll('.feature__checkbox'));
   var housingImagePreview = null;
+  var images = [];
   var HousingPrices = {
     BUNGALO: 0,
     FLAT: 1000,
@@ -83,11 +84,13 @@
   };
 
   var onImagesChoose = function (evt) {
-    return window.previewLoader.onFileChoose(createHousingPreview, evt);
+    images = images.concat(Array.from(form.images.files));
+    // console.log(images);
+    return window.previewLoader.onFileChoose(createHousingPreview, images, evt);
   };
 
   var onAvatarChoose = function (evt) {
-    return window.previewLoader.onFileChoose(avatarPreview, evt);
+    return window.previewLoader.onFileChoose(avatarPreview, null, evt);
   };
 
   var disableForm = function () {
@@ -218,6 +221,8 @@
   window.form = {
     disableForm: disableForm,
     enableForm: enableForm,
-    resetForm: resetForm
+    resetForm: resetForm,
+    // ////// remove
+    images: images
   };
 })();
