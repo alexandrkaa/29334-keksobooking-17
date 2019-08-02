@@ -11,6 +11,7 @@
   var avatarPreview = form.querySelector('.ad-form-header__preview img');
   var housingImagePreviewBlock = form.querySelector('.ad-form__photo-container');
   var formFeatures = Array.from(form.querySelectorAll('.feature__checkbox'));
+  var imagesBlock = form.querySelector('.ad-form__upload');
   var housingImagePreview = null;
   var HousingPrices = {
     BUNGALO: 0,
@@ -47,15 +48,19 @@
     });
   };
 
-  var createHousingPreview = function (files) {
-    if (housingImagePreview === null) {
-      housingImagePreview = document.createElement('img');
-      housingImagePreview.alt = 'Фотографии жилья';
-      housingImagePreview.width = 70;
-      housingImagePreview.height = 70;
-      housingImagePreviewBlock.appendChild(housingImagePreview);
-    }
-    return housingImagePreview;
+  var createHousingPreview = function (file) {
+    // if (housingImagePreview === null) {
+    housingImagePreview = document.createElement('img');
+    housingImagePreview.alt = 'Фотографии жилья';
+    housingImagePreview.width = 70;
+    housingImagePreview.height = 70;
+    housingImagePreview.src = file;
+    var housingImageContainer = document.createElement('div');
+    housingImageContainer.classList.add('ad-form__photo');
+    housingImageContainer.appendChild(housingImagePreview);
+    // housingImagePreviewBlock.appendChild(housingImagePreview);
+    // }
+    return housingImageContainer;
   };
 
   var deleteHousingPreview = function () {
@@ -81,21 +86,32 @@
     form.price.placeholder = minPrice;
   };
 
+  var resetImagesBlock = function () {
+    var images = document.querySelectorAll('.ad-form__photo');
+    images.forEach(function (image) {
+      image.remove();
+    });
+    imagesBlock.appendChild(photoPlaceTemplate);
+  };
+
   var onImagesChoose = function (event) {
     event.preventDefault();
     // housingImagePreviewBlock.innerHTML = '';
-    var resurses = window.previewLoader.onFileChoose(event.target.files);
-    resurses.forEach(function(resurs) {
-      var img = document.createElement('img');
-      img.alt = '';
-      img.src = resurs;
-      img.width = 70;
-      img.height = 70;
-      var imgContainer = document.createElement('div');
-      imgContainer.classList.add('ad-form__photo')
-      imgContainer.appendChild(img)
-      housingImagePreviewBlock.appendChild(imgContainer);
-    })
+    var resources = window.previewLoader.onFileChoose(event.target.files);
+
+    // !!! Добавить по reset возвращение пустого контейнера
+
+    resources.forEach(function (resource) {
+      // var img = document.createElement('img');
+      // img.alt = '';
+      // img.src = resource;
+      // img.width = 70;
+      // img.height = 70;
+      // var imgContainer = document.createElement('div');
+      // imgContainer.classList.add('ad-form__photo');
+      // imgContainer.appendChild(img);
+      housingImagePreviewBlock.appendChild(createHousingPreview(resource));
+    });
   };
 
   var onAvatarChoose = function (evt) {
@@ -215,7 +231,7 @@
       }
       it.style = '';
     });
-
+    resetImagesBlock();
   };
 
   var onFormReset = function (evt) {
