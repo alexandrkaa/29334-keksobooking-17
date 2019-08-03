@@ -8,9 +8,6 @@
     UNSENT: 0,
     DONE: 200
   };
-  // var AJAX_COMPLETED = 4; // ajax запрос выполнен
-  // var HTTP_OK = 200; // сервер ответил OK
-  // var NETWORK_TIMEOUT = 5000;
   var NETWORK_TIMEOUT = 5000;
 
   function ajax(settings) {
@@ -42,7 +39,7 @@
       }
       if (xhr.readyState === AjaxStates.AJAX_COMPLETED && xhr.status !== AjaxStatuses.DONE) {
         if (typeof options.sendError === 'function') {
-          options.sendError(xhr.response, options.method);
+          options.sendError(options.method);
         }
       }
     };

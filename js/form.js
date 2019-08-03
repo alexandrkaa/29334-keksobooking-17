@@ -11,8 +11,6 @@
   var avatarPreview = form.querySelector('.ad-form-header__preview img');
   var housingImagePreviewBlock = form.querySelector('.ad-form__photo-container');
   var formFeatures = Array.from(form.querySelectorAll('.feature__checkbox'));
-  var imagesBlock = form.querySelector('.ad-form__upload');
-  var housingImagePreview = null;
   var allImages = [];
   var FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
   var HousingPrices = {
@@ -51,7 +49,7 @@
   };
 
   var createHousingPreview = function (file) {
-    housingImagePreview = document.createElement('img');
+    var housingImagePreview = document.createElement('img');
     housingImagePreview.alt = 'Фотографии жилья';
     housingImagePreview.width = 70;
     housingImagePreview.height = 70;
@@ -60,11 +58,6 @@
     housingImageContainer.classList.add('ad-form__photo');
     housingImageContainer.appendChild(housingImagePreview);
     return housingImageContainer;
-  };
-
-  var deleteHousingPreview = function () {
-    housingImagePreview.remove();
-    housingImagePreview = null;
   };
 
   var onAddressChange = function (evt) {
@@ -96,7 +89,7 @@
     resetCurrentImages();
     var imgPlaceHolder = document.createElement('div');
     imgPlaceHolder.classList.add('ad-form__photo');
-    imagesBlock.appendChild(imgPlaceHolder);
+    housingImagePreviewBlock.appendChild(imgPlaceHolder);
   };
 
   var checkMimeType = function (file) {
@@ -128,8 +121,9 @@
     housingImagePreviewBlock.appendChild(fragment);
   };
 
-  var onAvatarChoose = function (evt) {
-    return onFileChoose(avatarPreview, evt);
+  var onAvatarChoose = function () {
+    var resources = onFileChoose(filterFiles(Array.from(form.avatar.files)));
+    avatarPreview.src = resources[0];
   };
 
   var disableForm = function () {
@@ -150,9 +144,6 @@
     form.capacity.removeEventListener('change', clearRoomsForGuestsValidity);
     form.avatar.removeEventListener('change', onAvatarChoose);
     form.images.removeEventListener('change', onImagesChoose);
-    if (housingImagePreview !== null) {
-      deleteHousingPreview();
-    }
     avatarPreview.src = DEFAULT_AVATAR_IMG;
     onTypeChange();
     disableEnterOnFormFeatures();
