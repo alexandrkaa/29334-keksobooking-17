@@ -100,7 +100,7 @@
   };
 
   var checkMimeType = function (file) {
-    var mime = file.type.slice(file.type.indexOf('/') + 1)
+    var mime = file.type.slice(file.type.indexOf('/') + 1);
     return FILE_TYPES.includes(mime);
   };
 
@@ -123,7 +123,7 @@
     var resources = onFileChoose(allImages);
     var fragment = document.createDocumentFragment();
     resources.forEach(function (resource) {
-      fragment.appendChild(createHousingPreview(resource))
+      fragment.appendChild(createHousingPreview(resource));
     });
     housingImagePreviewBlock.appendChild(fragment);
   };
