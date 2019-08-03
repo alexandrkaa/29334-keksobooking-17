@@ -37,11 +37,12 @@
       return checkMimeType(file);
     }).map(function (file) {
       return URL.createObjectURL(file);
-    })
+    });
     return filtredFiles;
   }
 
   window.previewLoader = {
-    onFileChoose: onFileChoose
+    onFileChoose: onFileChoose,
+    checkMimeType: checkMimeType
   };
 })();

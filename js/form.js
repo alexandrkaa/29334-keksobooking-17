@@ -177,8 +177,8 @@
         url: SERVER_URL,
         data: formData,
         async: true,
-        success: window.handleMessages.showSuccessMessage,
-        sendError: window.handleMessages.showErrorMessage,
+        success: window.handleMessages.showSuccess,
+        sendError: window.handleMessages.showError,
         timeout: NETWORK_TIMEOUT
       };
       window.server.ajax(ajaxSetting);

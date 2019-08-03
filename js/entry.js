@@ -35,7 +35,7 @@
           window.data.set(response);
           window.map.insertElems(window.data.get().slice(0, 5), window.adv.createPin);
         },
-        sendError: window.handleMessages.showErrorMessage
+        sendError: window.handleMessages.showError
       });
     });
   };

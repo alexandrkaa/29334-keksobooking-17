@@ -9,7 +9,7 @@
     reader.removeEventListener('load', onFileLoaded);
   };
 
-  var onFileChoose = function (pictureElem, images, evt) {
+  var onFileChoose = function (pictureElem, images) {
     var reader = new FileReader();
     // var fileChooser = evt.target;
     // var file = fileChooser.files[fileChooser.files.length - 1];

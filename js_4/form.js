@@ -13,6 +13,8 @@
   var formFeatures = Array.from(form.querySelectorAll('.feature__checkbox'));
   var imagesBlock = form.querySelector('.ad-form__upload');
   var housingImagePreview = null;
+  var allImages = [];
+  var FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
   var HousingPrices = {
     BUNGALO: 0,
     FLAT: 1000,
@@ -86,18 +88,42 @@
     form.price.placeholder = minPrice;
   };
 
-  var resetImagesBlock = function () {
+  var resetCurrentImages = function () {
     var images = document.querySelectorAll('.ad-form__photo');
     images.forEach(function (image) {
       image.remove();
     });
-    imagesBlock.appendChild(photoPlaceTemplate);
+  };
+
+  var resetImagesBlock = function () {
+    resetCurrentImages();
+    var imgPlaceHolder = document.createElement('div');
+    imgPlaceHolder.classList.add('ad-form__photo');
+    imagesBlock.appendChild(imgPlaceHolder);
+  };
+
+  var checkMimeType = function (file) {
+    var mime = file.type.slice(file.type.indexOf('/') + 1)
+    return FILE_TYPES.includes(mime);
+  };
+
+  var onFileChoose = function (files) {
+    var filtredFiles = Array.prototype.filter.call(files, function (file) {
+      return checkMimeType(file);
+    }).map(function (file) {
+      return URL.createObjectURL(file);
+    });
+    return filtredFiles;
   };
 
   var onImagesChoose = function (event) {
     event.preventDefault();
     // housingImagePreviewBlock.innerHTML = '';
-    var resources = window.previewLoader.onFileChoose(event.target.files);
+    resetCurrentImages();
+    // сделать отдельно фильтр типа
+    allImages = allImages.concat(Array.from(form.images.files));
+    var resources = onFileChoose(allImages);
+
 
     // !!! Добавить по reset возвращение пустого контейнера
 
@@ -197,6 +223,7 @@
     var isFormValidated = validateForm();
     if (isFormValidated) {
       var formData = new FormData(form);
+      formData.delete('images');
       var ajaxSetting = {
         method: 'POST',
         url: SERVER_URL,
@@ -241,9 +268,14 @@
     window.entry.start();
   };
 
+  var returnImg = function () {
+    return allImages;
+  };
+
   window.form = {
     disableForm: disableForm,
     enableForm: enableForm,
-    resetForm: resetForm
+    resetForm: resetForm,
+    returnImg: returnImg
   };
 })();

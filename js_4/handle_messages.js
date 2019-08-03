@@ -14,7 +14,7 @@
     window.entry.start();
   };
 
-  var showSuccessMessage = function () {
+  var showSuccess = function () {
     successMessageElement = successTemplate.cloneNode(true);
     document.addEventListener('keydown', window.utils.onEscPress.bind(null, closeSuccessMessage));
     successMessageElement.addEventListener('click', function () {
@@ -47,7 +47,7 @@
   };
 
   window.handleMessages = {
-    showSuccess: showSuccessMessage,
+    showSuccess: showSuccess,
     showError: showErrorMessage
   };
 })();

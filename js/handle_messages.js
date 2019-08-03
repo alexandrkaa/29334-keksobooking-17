@@ -14,7 +14,7 @@
     window.entry.start();
   };
 
-  var showSuccessMessage = function () {
+  var showSuccess = function () {
     successMessageElement = successTemplate.cloneNode(true);
     document.addEventListener('keydown', window.utils.onEscPress.bind(null, closeSuccessMessage));
     successMessageElement.addEventListener('click', function () {
@@ -28,7 +28,7 @@
   };
 
   var onEscCloseErrorMessageOnPostRequest = function (evt) {
-    return window.utils.onEscPress(closeErrorMessage.bind(null, 'GET'), evt);
+    return window.utils.onEscPress(closeErrorMessage.bind(null, 'POST'), evt);
   };
 
   var closeErrorMessage = function (sendMethod) {
@@ -42,7 +42,7 @@
     }
   };
 
-  var showErrorMessage = function (method) {
+  var showError = function (method) {
     var sendMethod = method || 'GET';
     errorMessageElement = null;
     errorMessageElement = errorTemplate.cloneNode(true);
@@ -58,7 +58,8 @@
   };
 
   window.handleMessages = {
-    showSuccessMessage: showSuccessMessage,
-    showErrorMessage: showErrorMessage
+    showSuccess: showSuccess,
+    showError: showError
   };
+
 })();
