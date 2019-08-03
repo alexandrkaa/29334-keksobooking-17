@@ -28,7 +28,6 @@
     };
     var options = Object.assign(ajaxSettings, settings);
     var xhr = new XMLHttpRequest();
-    console.log(xhr.readyState, xhr.status, xhr.statusText);
     xhr.responseType = options.type;
     xhr.open(options.method, options.url, options.async);
     xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
@@ -37,9 +36,7 @@
         xhr.setRequestHeader(key, options.headers[key]);
       }
     }
-    console.log(xhr.readyState, xhr.status, xhr.statusText);
     xhr.onreadystatechange = options.readyStateChange || function () {
-      console.log(xhr.readyState, xhr.status, xhr.statusText);
       if (xhr.readyState === AjaxStates.AJAX_COMPLETED && xhr.status === AjaxStatuses.DONE) {
         options.success(xhr.response);
       }
@@ -49,21 +46,8 @@
         }
       }
     };
-
-    // xhr.onerror = function () {
-    //   if (typeof options.sendError === 'function') {
-    //     console.log(xhr);
-    //     options.sendError('Ошибка соединения!', options.method);
-    //   }
-    // };
     xhr.timeout = options.timeout;
-    // debugger;
     xhr.send(options.data);
-    // try {
-    //   // xhr.send(options.data);
-    // } catch (err_) {
-    //   console.log(err_);
-    // }
   }
   window.server = {
     ajax: ajax

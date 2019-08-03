@@ -9,10 +9,12 @@
   var formFields = Array.from(form.querySelectorAll('input, select, textarea'));
   var formFieldsets = Array.from(form.querySelectorAll('fieldset'));
   var avatarPreview = form.querySelector('.ad-form-header__preview img');
-  var housingImagePreviewBlock = form.querySelector('.ad-form__photo');
+  var housingImagePreviewBlock = form.querySelector('.ad-form__photo-container');
   var formFeatures = Array.from(form.querySelectorAll('.feature__checkbox'));
+  var imagesBlock = form.querySelector('.ad-form__upload');
   var housingImagePreview = null;
-  var images = [];
+  var allImages = [];
+  var FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
   var HousingPrices = {
     BUNGALO: 0,
     FLAT: 1000,
@@ -48,15 +50,16 @@
     });
   };
 
-  var createHousingPreview = function () {
-    // if (housingImagePreview === null) {
+  var createHousingPreview = function (file) {
     housingImagePreview = document.createElement('img');
     housingImagePreview.alt = 'Фотографии жилья';
     housingImagePreview.width = 70;
     housingImagePreview.height = 70;
-    housingImagePreviewBlock.appendChild(housingImagePreview);
-    // }
-    return housingImagePreview;
+    housingImagePreview.src = file;
+    var housingImageContainer = document.createElement('div');
+    housingImageContainer.classList.add('ad-form__photo');
+    housingImageContainer.appendChild(housingImagePreview);
+    return housingImageContainer;
   };
 
   var deleteHousingPreview = function () {
@@ -65,7 +68,6 @@
   };
 
   var onAddressChange = function (evt) {
-    // console.log(evt.target.offsetTop + ', ' + evt.target.offsetLeft);
     form.address.value = evt.target.offsetTop + ', ' + evt.target.offsetLeft;
   };
 
@@ -83,14 +85,51 @@
     form.price.placeholder = minPrice;
   };
 
-  var onImagesChoose = function (evt) {
-    images = images.concat(Array.from(form.images.files));
-    console.log(images);
-    return window.previewLoader.onFileChoose(createHousingPreview, images, evt);
+  var resetCurrentImages = function () {
+    var images = document.querySelectorAll('.ad-form__photo');
+    images.forEach(function (image) {
+      image.remove();
+    });
+  };
+
+  var resetImagesBlock = function () {
+    resetCurrentImages();
+    var imgPlaceHolder = document.createElement('div');
+    imgPlaceHolder.classList.add('ad-form__photo');
+    imagesBlock.appendChild(imgPlaceHolder);
+  };
+
+  var checkMimeType = function (file) {
+    var mime = file.type.slice(file.type.indexOf('/') + 1)
+    return FILE_TYPES.includes(mime);
+  };
+
+  var filterFiles = function (files) {
+    return files.filter(function (file) {
+      return checkMimeType(file);
+    });
+  };
+
+  var onFileChoose = function (files) {
+    return files.map(function (file) {
+      return URL.createObjectURL(file);
+    });
+  };
+
+  var onImagesChoose = function (event) {
+    event.preventDefault();
+    resetCurrentImages();
+    allImages = filterFiles(allImages.concat(Array.from(form.images.files)));
+    var resources = onFileChoose(allImages);
+    var fragment = document.createDocumentFragment();
+    resources.forEach(function (resource) {
+      fragment.appendChild(createHousingPreview(resource))
+    });
+    housingImagePreviewBlock.appendChild(fragment);
   };
 
   var onAvatarChoose = function (evt) {
-    return window.previewLoader.onFileChoose(avatarPreview, evt.target.files, evt);
+    return onFileChoose(avatarPreview, evt);
   };
 
   var disableForm = function () {
@@ -172,6 +211,10 @@
     var isFormValidated = validateForm();
     if (isFormValidated) {
       var formData = new FormData(form);
+      formData.delete('images');
+      allImages.forEach(function (file) {
+        formData.append('images', file, file.name);
+      });
       var ajaxSetting = {
         method: 'POST',
         url: SERVER_URL,
@@ -206,7 +249,8 @@
       }
       it.style = '';
     });
-
+    allImages.splice(0, allImages.length);
+    resetImagesBlock();
   };
 
   var onFormReset = function (evt) {
@@ -216,13 +260,9 @@
     window.entry.start();
   };
 
-  // mainPin.addEventListener('onAddressChange', onAddressChange);
-
   window.form = {
     disableForm: disableForm,
     enableForm: enableForm,
-    resetForm: resetForm,
-    // ////// remove
-    images: images
+    resetForm: resetForm
   };
 })();
